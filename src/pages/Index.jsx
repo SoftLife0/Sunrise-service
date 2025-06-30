@@ -137,16 +137,16 @@ const Index = () => {
       </div>
 
       {/* Optional Floating Shape (for style) */}
-      {/* <img src={shape1} className="position-absolute bottom-0 end-0" style={{ width: '60px' }} /> */}
+      {/* <img src={shape} className="position-absolute bottom-0 end-0" style={{ width: '60px' }} /> */}
     </section>
 
       <section className="position-relative py-5 bg-black text-white">
       <div className="container">
-        <div className="row align-items-center gy-5">
+        <div className="row align-items-center ">
           {/* Left Content */}
-          <div className="col-lg-7 order-2 order-lg-1">
+          <div className="col-lg-6 order-2 order-lg-1">
             <div className="mb-4">
-              <span className="text-primary fw-bold small d-inline-block mb-2 position-relative ps-4">
+              <span className="text-white fw-bold small d-inline-block mb-2 position-relative ps-4">
                 Why Choose Us
                 <span className="position-absolute start-0 top-50 translate-middle-y rounded-pill bg-primary" style={{ width: '8px', height: '8px' }}></span>
               </span>
@@ -180,12 +180,12 @@ const Index = () => {
           </div>
 
           {/* Right Image */}
-          <div className="col-lg-5 order-1 order-lg-2 text-center">
+          <div className="col-lg-6 order-1 order-lg-2 text-center">
             <img
               src={whyImg}
               alt="Why Choose Us"
               className="img-fluid rounded-circle shadow border border-white"
-              style={{ maxWidth: '360px', height: '360px', objectFit: 'cover' }}
+              style={{ width: '100%' }}
             />
           </div>
         </div>
