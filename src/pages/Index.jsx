@@ -1,5 +1,5 @@
 import React from 'react';
-import heroMain from '../assets/hero.jpg';
+import heroMain from '../assets/cloth.jpeg';
 import whyImg from '../assets/why-choose-us.jpg';
 import shape1 from '../assets/shape1.png';
 import Header from '../components/Header';
@@ -53,7 +53,7 @@ const Index = () => {
               <div className="position-relative d-inline-block">
                 {/* Main Image */}
                 <img
-                  src="https://plus.unsplash.com/premium_photo-1678218580850-15c50b9f3525?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  src={heroMain}
                   alt="Main"
                   className="img-fluid rounded-circle border border-white shadow"
                   style={{ width: '100%' }}
