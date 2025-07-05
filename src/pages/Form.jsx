@@ -119,7 +119,7 @@ const Form = () => {
                             <div className="col-12">
                                 <label htmlFor="service" className="form-label fw-bold">Service Type</label>
                                 <select 
-                                  className="form-select form-select-lg rounded-3"
+                                  className="form-select rounded-3"
                                   id="service"
                                   value={formData.service}
                                   onChange={handleChange}
