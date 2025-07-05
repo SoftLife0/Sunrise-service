@@ -43,7 +43,7 @@ const Form = () => {
     } catch (error) {
       // Handle error
       console.error('Error scheduling pickup:', error)
-      alert('Failed to schedule pickup. Please try again.')
+      alert('Slow down there, ah no finish yet 😂.')
     }
   }
 
