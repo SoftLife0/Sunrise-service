@@ -70,7 +70,7 @@ const Form = () => {
                                 <label htmlFor="name" className="form-label fw-bold">Full Name</label>
                                 <input 
                                   type="text" 
-                                  className="form-control form-control-lg rounded-3" 
+                                  className="form-control rounded-3" 
                                   id="name" 
                                   value={formData.name}
                                   onChange={handleChange}
@@ -83,7 +83,7 @@ const Form = () => {
                                 <label htmlFor="phone" className="form-label fw-bold">Phone Number</label>
                                 <input 
                                   type="tel" 
-                                  className="form-control form-control-lg rounded-3"
+                                  className="form-control rounded-3"
                                   id="phone"
                                   value={formData.phone}
                                   onChange={handleChange}
@@ -96,7 +96,7 @@ const Form = () => {
                                 <label htmlFor="date" className="form-label fw-bold">Pickup Date</label>
                                 <input 
                                   type="date" 
-                                  className="form-control form-control-lg rounded-3"
+                                  className="form-control rounded-3"
                                   id="date"
                                   value={formData.date}
                                   onChange={handleChange}
@@ -108,7 +108,7 @@ const Form = () => {
                                 <label htmlFor="time" className="form-label fw-bold">Pickup Time</label>
                                 <input 
                                   type="time" 
-                                  className="form-control form-control-lg rounded-3"
+                                  className="form-control rounded-3"
                                   id="time"
                                   value={formData.time}
                                   onChange={handleChange}
