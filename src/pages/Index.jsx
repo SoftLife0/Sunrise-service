@@ -18,7 +18,7 @@ const Index = () => {
   const plans = [
     { name: 'Student', price: 'GH₵90-150', description: 'Basic wash & fold service for students with free pickup and delivery', link: '/prices', image: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60' },
     { name: 'Standard', price: 'GH₵100-200', description: 'Weekly laundry service with wash, dry and fold included', link: '/prices', image: 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c' },
-    { name: 'VIP', price: 'GH₵150-250', description: 'Premium service with wash, dry, iron and express delivery', link: '/prices', image: 'https://images.unsplash.com/photo-1545173168-9f1947eebb7f' },    
+    { name: 'VIP', price: 'GH₵150-250', description: 'Premium service with wash, dry, iron and express delivery', link: '/prices', image: 'https://images.unsplash.com/photo-1489274495757-95c7c837b101?q=80&w=1015&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },    
   ];
   
 
@@ -26,17 +26,7 @@ const Index = () => {
   return (
     <div style={{ backgroundColor: '#fff', minHeight: '100vh', color: '#000', position: 'relative' }}>
       {/* Floating Shape Top Left */}
-      <img
-        src={shape1}
-        alt="Shape"
-        className="position-absolute floating-shape"
-        style={{
-          top: '100px',
-          left: '100px',
-          width: '80px',
-          zIndex: 1,
-        }}
-      />
+      <img src={shape1} alt="Shape" className="position-absolute floating-shape" style={{top: '50px',left: 0,width: '80px',zIndex: 1,}}/>
 
       {/* Header */}
       <Header />
@@ -63,7 +53,7 @@ const Index = () => {
               <div className="position-relative d-inline-block">
                 {/* Main Image */}
                 <img
-                  src={heroMain}
+                  src="https://plus.unsplash.com/premium_photo-1678218580850-15c50b9f3525?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                   alt="Main"
                   className="img-fluid rounded-circle border border-white shadow"
                   style={{ width: '100%' }}
@@ -74,19 +64,19 @@ const Index = () => {
                   src="https://images.unsplash.com/photo-1517677208171-0bc6725a3e60"
                   alt="Thumb1"
                   className="position-absolute rounded-circle border  border-white shadow"
-                  style={{ width: '80px', height: '80px', top: '0px', left: '-40px' }}
+                  style={{ width: '80px', height: '80px', top: '0px', left: 0 }}
                 />
                 <img
                   src="https://images.unsplash.com/photo-1582735689369-4fe89db7114c"
                   alt="Thumb2"
                   className="position-absolute rounded-circle  border border-white shadow"
-                  style={{ width: '80px', height: '80px', bottom: '0px', left: '-40px' }}
+                  style={{ width: '80px', height: '80px', bottom: '0px', left: 0 }}
                 />
                 <img
-                  src="https://images.unsplash.com/photo-1545173168-9f1947eebb7f"
+                  src="https://images.unsplash.com/photo-1489274495757-95c7c837b101?q=80&w=1015&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                   alt="Thumb3"
                   className="position-absolute rounded-circle border  border-white shadow"
-                  style={{ width: '80px', height: '80px', bottom: '0px', right: '-40px' }}
+                  style={{ width: '80px', height: '80px', bottom: '0px', right: 0 }}
                 />
               </div>
             </div>
@@ -187,9 +177,10 @@ const Index = () => {
 
             {/* Feature List */}
             <div className="mb-4 d-flex align-items-start">
-            <div className="me-3 fs-4 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style={{width: "40px", height: "40px"}}>
+            <div className="me-3 fs-4 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style={{minWidth: "40px", minHeight: "40px", width: "40px", height: "40px"}}>
               <i className="bi bi-droplet-fill"></i>
             </div>
+            
             <div>
               <h5 className="fw-semibold mb-1">Wash & Fold</h5>
               <p className="text-light opacity-75 mb-0">Professional washing and expert folding for your everyday laundry needs.</p>
@@ -197,7 +188,7 @@ const Index = () => {
           </div>
 
           <div className="mb-4 d-flex align-items-start">
-            <div className="me-3 fs-4 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style={{width: "40px", height: "40px"}}>
+            <div className="me-3 fs-4 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style={{minWidth: "40px", minHeight: "40px", width: "40px", height: "40px"}}>
               <i className="bi bi-hand-index-thumb"></i>
             </div>
             <div>
@@ -207,7 +198,7 @@ const Index = () => {
           </div>
 
           <div className="mb-4 d-flex align-items-start">
-            <div className="me-3 fs-4 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style={{width: "40px", height: "40px"}}>
+            <div className="me-3 fs-4 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style={{minWidth: "40px", minHeight: "40px", width: "40px", height: "40px"}}>
               <i className="bi bi-palette"></i>
             </div>
             <div>
@@ -217,7 +208,7 @@ const Index = () => {
           </div>
 
           <div className="mb-4 d-flex align-items-start">
-            <div className="me-3 fs-4 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style={{width: "40px", height: "40px"}}>
+            <div className="me-3 fs-4 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style={{minWidth: "40px", minHeight: "40px", width: "40px", height: "40px"}}>
               <i className="bi bi-suit-heart"></i>
             </div>
             <div>
@@ -227,7 +218,7 @@ const Index = () => {
           </div>
 
           <div className="d-flex align-items-start">
-            <div className="me-3 fs-4 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style={{width: "40px", height: "40px"}}>
+            <div className="me-3 fs-4 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style={{minWidth: "40px", minHeight: "40px", width: "40px", height: "40px"}}>
               <i className="bi bi-stars"></i>
             </div>
             <div>

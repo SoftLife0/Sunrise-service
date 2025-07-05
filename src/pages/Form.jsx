@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { apiService } from '../services/apiService'
+import shape1 from '../assets/shape1.png';
+import { Link } from 'react-router-dom'
+
 
 const Form = () => {
   const [formData, setFormData] = useState({
@@ -46,6 +49,9 @@ const Form = () => {
 
   return (
     <div style={{ backgroundColor: '#fff', paddingTop: '80px', color: '#000' }}>
+        {/* Floating Shape Top Left */}
+        <img src={shape1} alt="Shape" className="position-absolute floating-shape" style={{top: '50px',left: 0,width: '80px',zIndex: 1,}}/>
+
         <Header />
 
         <div className="container mb-5">
@@ -55,9 +61,10 @@ const Form = () => {
                         <h6 className="mb-3 text-primary">Pickup Request Form</h6>
                         <h2 className="display-5 fw-bold">Schedule Your Pickup</h2>
                         <div className="bg-black mx-auto mt-3 mb-5" style={{ width: '60px', height: '3px' }}></div>
+                        <Link to="/prices" className="btn text-white btn-md " style={{background: '#e03e2c'}}>Check Out Our Prices</Link>
                     </div>
 
-                    <form className="card shadow-lg p-5 bg-light" onSubmit={handleSubmit}>
+                    <form className="card shadow-lg p-3 bg-light" onSubmit={handleSubmit}>
                         <div className="row g-4">
                             <div className="col-md-6">
                                 <label htmlFor="name" className="form-label fw-bold">Full Name</label>
@@ -150,7 +157,7 @@ const Form = () => {
                             </div>
 
                             <div className="col-12 text-center mt-4">
-                                <button type="submit" className="btn btn-primary btn-lg px-5 rounded-pill">Schedule Pickup</button>
+                                <button type="submit" className="btn btn-primary btn-md px-5 rounded-pill">Schedule Pickup</button>
                             </div>
                         </div>
                     </form>

@@ -2,10 +2,13 @@ import React from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { Link } from 'react-router-dom'
+import shape1 from '../assets/shape1.png';
 
 const Prices = () => {
   return (
     <div style={{ backgroundColor: '#fff', paddingTop: '120px', color: '#000', position: 'relative' }}>
+        <img src={shape1} alt="Shape" className="position-absolute floating-shape" style={{top: '50px',left: 0,width: '80px',zIndex: 1,}}/>
+        
         <Header />
 
         <div className="container mb-5" style={{ minHeight: '80vh', paddingBottom: '5px' }}>
