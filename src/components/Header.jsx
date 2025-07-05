@@ -1,11 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
     <header className="bg-white border-bottom fixed-top shadow-sm z-3">
       <nav className="navbar navbar-expand-lg fixed-top bg-white">
         <div className="container">
-          <a className="navbar-brand fw-bold text-black" href="#">🌅 Sunrise</a>
+          <Link className="navbar-brand fw-bold text-black" to="/">🌅 Sunrise</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span className="navbar-toggler-icon"></span>
           </button>

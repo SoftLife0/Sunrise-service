@@ -1,9 +1,5 @@
 import React from 'react';
 import heroMain from '../assets/hero.jpg';
-import thumb1 from '../assets/thumb1.jpg';
-import thumb2 from '../assets/thumb2.jpg';
-import thumb3 from '../assets/thumb3.jpg';
-import shape from '../assets/shape.png';
 import whyImg from '../assets/why-choose-us.jpg';
 import shape1 from '../assets/shape1.png';
 import Header from '../components/Header';
@@ -13,16 +9,16 @@ import Footer from '../components/Footer';
 const Index = () => {
 
   const steps = [
-    { number: '01.', title: 'Schedule Pickup' },
-    { number: '02.', title: 'We Collect & Sort' },
-    { number: '03.', title: 'Clean & Press' }, 
-    { number: '04.', title: 'Delivery to You' },    
+    { title: 'Schedule Pickup', icon: 'bi bi-calendar-check' },
+    { title: 'We Collect & Sort', icon: 'bi bi-truck' },
+    { title: 'Clean & Press', icon: 'bi bi-sun' }, 
+    { title: 'Delivery to You', icon: 'bi bi-gift' },    
   ];
 
   const plans = [
-    { name: 'Student', price: 'GH₵90-150', description: 'Basic wash & fold service for students with free pickup and delivery', link: '#basic', image: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60' },
-    { name: 'Standard', price: 'GH₵100-200', description: 'Weekly laundry service with wash, dry and fold included', link: '#monthly', image: 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c' },
-    { name: 'VIP', price: 'GH₵150-250', description: 'Premium service with wash, dry, iron and express delivery', link: '#premium', image: 'https://images.unsplash.com/photo-1545173168-9f1947eebb7f' },    
+    { name: 'Student', price: 'GH₵90-150', description: 'Basic wash & fold service for students with free pickup and delivery', link: '/prices', image: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60' },
+    { name: 'Standard', price: 'GH₵100-200', description: 'Weekly laundry service with wash, dry and fold included', link: '/prices', image: 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c' },
+    { name: 'VIP', price: 'GH₵150-250', description: 'Premium service with wash, dry, iron and express delivery', link: '/prices', image: 'https://images.unsplash.com/photo-1545173168-9f1947eebb7f' },    
   ];
   
 
@@ -54,11 +50,10 @@ const Index = () => {
               <div className="text-center text-lg-start">
                 <h1 className="mb-4 display-4 fw-bold text-black"><span className='text-primary'>Fresh</span> laundry delivered to your <span style={{color: '#e03e2c'}}>Doorstep</span>!</h1>
                 <p className="mb-4 fs-5 text-black">Experience premium laundry service tailored to your needs. We handle everything from pickup to delivery, including washing, drying, folding, and ironing.</p>   
-                {/* Save time and enjoy fresh, clean clothes without lifting a finger              */}
-                {/* add a sub textxx */}
+
                 <div className="d-flex justify-content-center justify-content-lg-start gap-3">
-                  <a href="#schedule" className="btn text-white btn-lg px-4 py-2" style={{background: '#e03e2c'}}>Schedule Your Pick Up</a>
-                  <Link to="/prices" className="btn btn-outline-primary btn-lg px-4 py-2">See Prices</Link>
+                  <Link to="/form" className="btn text-white btn-md px-4 py-2" style={{background: '#e03e2c'}}>Schedule Your Pick Up</Link>
+                  <Link to="/prices" className="btn btn-outline-primary btn-md px-4 py-2">See Prices</Link>
                 </div>                
               </div>  
             </div>
@@ -76,19 +71,19 @@ const Index = () => {
 
                 {/* Thumbnails */}
                 <img
-                  src={thumb1}
+                  src="https://images.unsplash.com/photo-1517677208171-0bc6725a3e60"
                   alt="Thumb1"
                   className="position-absolute rounded-circle border  border-white shadow"
                   style={{ width: '80px', height: '80px', top: '0px', left: '-40px' }}
                 />
                 <img
-                  src={thumb2}
+                  src="https://images.unsplash.com/photo-1582735689369-4fe89db7114c"
                   alt="Thumb2"
                   className="position-absolute rounded-circle  border border-white shadow"
                   style={{ width: '80px', height: '80px', bottom: '0px', left: '-40px' }}
                 />
                 <img
-                  src={thumb3}
+                  src="https://images.unsplash.com/photo-1545173168-9f1947eebb7f"
                   alt="Thumb3"
                   className="position-absolute rounded-circle border  border-white shadow"
                   style={{ width: '80px', height: '80px', bottom: '0px', right: '-40px' }}
@@ -126,7 +121,7 @@ const Index = () => {
             <div key={index} className="col-sm-6 col-lg-3">
               <div className="text-center p-4">
                 <div className="rounded-circle text-black d-inline-flex align-items-center justify-content-center mb-3" style={{ width: 70, height: 70, border: '2px solid black' }}>                    
-                  <span className="fs-4 fw-bold">{step.number}</span>
+                  <i className={`${step.icon} fs-4 fw-bold`}></i>                                    
                 </div>
                 <h5 className="text-black ">{step.title}</h5>
               </div>
@@ -167,7 +162,7 @@ const Index = () => {
                   <h2 className="card-price mb-2 fw-bold">{plan.price}</h2>                  
                   <p className="mb-0">{plan.description}</p>
                   
-                  <a href="#basic" className="btn btn-outline-primary mt-3">Choose Plan</a>
+                  <Link to={plan.link} className="btn btn-outline-primary mt-3">Choose Plan</Link>
                 </div>
 
               </div>
@@ -270,7 +265,7 @@ const Index = () => {
         <div className="row g-4 justify-content-center">
           <div className="col-sm-6 col-lg-4">
             <div className="text-center p-4">
-              <a href="tel:+15551234567" className="text-decoration-none">
+              <a href="tel:+233557600158" className="text-decoration-none">
                 <div className="rounded-circle bg-white shadow d-inline-flex align-items-center justify-content-center mb-3" style={{ width: 80, height: 80 }}>
                   <i className="bi bi-telephone-fill fs-2 text-primary"></i>
                 </div>

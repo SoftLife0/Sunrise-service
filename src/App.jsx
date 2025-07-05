@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Index from './pages/Index'
 import Prices from './pages/Prices';
+import Form from './pages/Form';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/prices" element={<Prices />} />
+          <Route path="/form" element={<Form />} />
           {/* Add more routes as needed */}
           <Route path="*" element={<div>404 Not Found</div>} />
         </Routes>

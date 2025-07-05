@@ -1,6 +1,7 @@
 import React from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { Link } from 'react-router-dom'
 
 const Prices = () => {
   return (
@@ -10,12 +11,10 @@ const Prices = () => {
         <div className="container mb-5" style={{ minHeight: '80vh', paddingBottom: '5px' }}>
             <div className="row justify-content-center">
                 <div className="col-lg-8">
-                    <div className="text-center">
+                    <div className="text-center mb-3">
                         <h6 className=" mb-3 text-primary">Pricing Plans</h6>
-                        <h2 className="display-5 fw-bold ">Exceptional Quality at Competitive Rates</h2>
-                        <div className="bg-black mx-auto mt-3 mb-4" style={{ width: '60px', height: '3px' }}></div>
-                        <p className="lead ">
-                        </p>
+                        <h2 className="display-5 fw-bold ">Top Quality at Competitive Rates</h2>
+                        <div className="bg-black mx-auto mt-3 mb-5" style={{ width: '60px', height: '3px' }}></div>
                     </div>
 
                     <div className="pricing-table">
@@ -66,7 +65,8 @@ const Prices = () => {
 
                     <div className="text-center mt-5">
                         <p className="text-muted">Ready to schedule your laundry pickup? Contact us now for convenient door-to-door service.</p>
-                        <a href="#schedule" className="btn text-white btn-md px-4 py-2" style={{background: '#e03e2c'}}>Schedule Your Pick Up</a>
+                        <Link to="/form" className="btn text-white btn-md px-4 py-2 me-2" style={{background: '#e03e2c'}}>Schedule Your Pick Up</Link>
+                        <a href="tel:+233557600158" className="btn text-white btn-primary btn-md px-4 py-2">Call Us</a>
                     </div>
                     
                 </div>
