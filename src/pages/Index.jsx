@@ -43,7 +43,7 @@ const Index = () => {
 
                 <div className="d-flex justify-content-center justify-content-lg-start gap-3">
                   <Link to="/form" className="btn text-white btn-md px-4 py-2" style={{background: '#e03e2c'}}>Schedule Your Pick Up</Link>
-                  <Link to="/prices" className="btn btn-outline-primary btn-md px-4 py-2">See Prices</Link>
+                  <Link to="/prices" className="btn btn-primary btn-md px-4 py-2">See Prices</Link>
                 </div>                
               </div>  
             </div>
