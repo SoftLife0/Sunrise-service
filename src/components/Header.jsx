@@ -7,7 +7,8 @@ const Header = () => {
       <nav className="navbar navbar-expand-lg fixed-top bg-white">
         <div className="container">
           <Link className="navbar-brand fw-bold text-black" to="/">🌅 Sunrise</Link>
-          <Link to="#" className="btn text-white btn-md btn-primary px-4 py-2" >Dashboard</Link>
+          <a href="tel:+233557600158" className="btn text-white btn-md btn-primary px-4 py-2" >Contact Us</a>
+          
           
 
           {/* <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

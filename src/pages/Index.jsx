@@ -1,5 +1,5 @@
 import React from 'react';
-import heroMain from '../assets/cloth.jpeg';
+import heroMain from '../assets/cloth.png';
 import whyImg from '../assets/serve.jpeg';
 import shape1 from '../assets/shape1.png';
 import Header from '../components/Header';
