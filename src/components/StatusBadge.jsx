@@ -4,7 +4,7 @@ const StatusBadge = ({ status, statusType }) => {
   let label = '';
 
   if (statusType === 'status') {
-    if (status === 'PENDING_PICKUP') {
+    if (status === 'new') {
       badgeClass = 'bg-warning';
       label = 'Awaiting Pickup';
     } else if (status === 'IN_WASH') {

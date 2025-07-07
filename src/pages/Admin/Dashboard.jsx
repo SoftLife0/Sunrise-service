@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import StatusBadge from '../../components/StatusBadge';
 import { Offcanvas } from 'react-bootstrap';
+import { apiService } from '../../services/apiService';
 
 const Dashboard = () => {
-  const [show, setShow] = useState(false);
-  const [selectedRequest, setSelectedRequest] = useState(null);
+    const [show, setShow] = useState(false);
+    const [selectedRequest, setSelectedRequest] = useState(null);
+    const [pickupRequests, setPickupRequests] = useState([]);
 
   const handleClose = () => setShow(false);
   const handleShow = (request) => {
@@ -13,34 +15,23 @@ const Dashboard = () => {
     setShow(true);
   };
 
-  const pickupRequests = [
-    {
-        name: "John Doe",
-        address: "123 Main St, City", 
-        phone: "0592033701",
-        date: "2024-01-15",
-        status: "PENDING_PICKUP",
-    },
-    {
-        name: "Jane Smith",
-        address: "456 Oak Ave, Town",
-        phone: "0592033701",
-        date: "2024-01-16", 
-        status: "IN_WASH",
-    },
-    {
-        name: "Bob Wilson",
-        address: "789 Pine Rd, Village",
-        phone: "0592033701",
-        date: "2024-01-17",
-        status: "READY_FOR_RETURN", 
-    }
-  ];
+  useEffect(() => {
+    const fetchPickupRequests = async () => {
+      try {
+        const response = await apiService.get('/requests/new/');
+        console.log('Pickup Requests:', response);
+        setPickupRequests(response);
+      } catch (error) {
+        console.error('Error fetching pickup requests:', error);
+      }
+    };  
+    fetchPickupRequests();
+  }, []);
 
   const cardData = [
     {
         title: "New Request",
-        value: "0",
+        value: pickupRequests?.count || "0",
         subtext: "New pickup requests",
         icon: <i className="bi bi-archive"></i>,
         gradient: "linear-gradient(45deg, #FF6B6B, #FF8E8E)"
@@ -130,8 +121,9 @@ const Dashboard = () => {
             </h4>
           </div>
 
+
           <div className="row g-4">
-            {pickupRequests.map((request, index) => (
+            {Array.isArray(pickupRequests?.requests) && pickupRequests?.requests.map((request, index) => (
               <div key={index} className="col-md-4">
                 <div className="card shadow-lg h-100 border-0" 
                   style={{
@@ -148,14 +140,14 @@ const Dashboard = () => {
                     <div className="d-flex justify-content-between align-items-start mb-2">
                       <small className="text-muted">
                         <i className="bi bi-calendar3 me-1"></i>
-                        {request.date}
+                        {request?.preferred_date} - {request.preferred_time}
                       </small>
                       <StatusBadge status={request.status} statusType="status" />
                     </div>
-                    <h5 className="card-title mb-3 fw-bold">{request.name}</h5>
+                    <h5 className="card-title mb-3 fw-bold">{request.customer_name}</h5>
                     <div className="d-flex align-items-center mb-2 text-secondary">
                       <i className="bi bi-geo-alt me-2"></i>
-                      <span>{request.address}</span>
+                      <span>{request.pickup_address}</span>
                     </div>
                     <div className="d-flex align-items-center text-secondary">
                       <i className="bi bi-telephone me-2"></i>
@@ -166,7 +158,6 @@ const Dashboard = () => {
                       <button 
                         className="btn btn-outline-secondary btn-sm" 
                         onClick={() => handleShow(request)}
-                        
                       >
                         <i className="bi bi-arrow-right me-2"></i>
                         View Details
@@ -216,7 +207,7 @@ const Dashboard = () => {
                                 <small className="text-muted d-block mb-1">Name</small>
                                 <div className="d-flex align-items-center">
                                     <i className="bi bi-person me-2"></i>
-                                    {selectedRequest.name}
+                                    {selectedRequest.customer_name}
                                 </div>
                             </div>
                             <div className="mb-3">
@@ -230,14 +221,14 @@ const Dashboard = () => {
                                 <small className="text-muted d-block mb-1">Pickup Date</small>
                                 <div className="d-flex align-items-center">
                                     <i className="bi bi-calendar3 me-2"></i>
-                                    {selectedRequest.date}
+                                    {selectedRequest.preferred_date}
                                 </div>
                             </div>
                             <div className="mb-3">
                                 <small className="text-muted d-block mb-1">Address</small>
                                 <div className="d-flex align-items-center">
                                     <i className="bi bi-geo-alt me-2"></i>
-                                    {selectedRequest.address}
+                                    {selectedRequest.pickup_address}
                                 </div>
                             </div>
                         </div>

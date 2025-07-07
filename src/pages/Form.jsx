@@ -1,20 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { apiService } from '../services/apiService'
 import shape1 from '../assets/shape1.png';
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 
 const Form = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    date: '',
-    time: '',
-    address: '',
-    service: ''
-  })
+  const [formData, setFormData] = useState({customer_name: '',phone: '',preferred_date: '',preferred_time: '',pickup_address: '',service: '', notes: '', latitude: '', longitude: '', email: ''})
+  const [serviceOptions, setServiceOptions] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
     const { id, value } = e.target
@@ -24,26 +20,36 @@ const Form = () => {
     }))
   }
 
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await apiService.get('/services');
+        console.log('Services:', response);
+        setServiceOptions(response);
+
+      } catch (error) {
+        console.error('Error fetching Services:', error);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
+
     try {
-      const response = await apiService.post('/pickup-requests', formData)
-      if(response.ok) {
-        // Handle success
-        alert('Pickup scheduled successfully!')
-        setFormData({
-          name: '',
-          phone: '',
-          date: '',
-          time: '',
-          address: '',
-          service: ''
-        })
-      }
+      console.log('Pickup Data:', formData)
+      const response = await apiService.post('/request/', formData)
+      console.log('Response:', response)
+      toast.success("Pickup scheduled successfully!", { position: 'top-right', hideProgressBar: true });
+      setFormData({customer_name: '',phone: '',preferred_date: '',preferred_time: '',pickup_address: '',service: '',notes: '',latitude: '',longitude: '',email: ''})
     } catch (error) {
-      // Handle error
+      toast.error("Error scheduling pickup.", { position: 'top-right', hideProgressBar: true });
       console.error('Error scheduling pickup:', error)
-      alert('Slow down there, ah no finish yet 😂.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -67,12 +73,12 @@ const Form = () => {
                     <form className="card shadow-lg p-3 bg-light" onSubmit={handleSubmit}>
                         <div className="row g-4">
                             <div className="col-md-6">
-                                <label htmlFor="name" className="form-label fw-bold">Full Name</label>
+                                <label htmlFor="customer_name" className="form-label fw-bold">Full Name</label>
                                 <input 
                                   type="text" 
                                   className="form-control rounded-3" 
-                                  id="name" 
-                                  value={formData.name}
+                                  id="customer_name" 
+                                  value={formData.customer_name}
                                   onChange={handleChange}
                                   placeholder="Enter your full name"
                                   required 
@@ -93,24 +99,24 @@ const Form = () => {
                             </div>
 
                             <div className="col-md-6">
-                                <label htmlFor="date" className="form-label fw-bold">Pickup Date</label>
+                                <label htmlFor="preferred_date" className="form-label fw-bold">Pickup Date</label>
                                 <input 
                                   type="date" 
                                   className="form-control rounded-3"
-                                  id="date"
-                                  value={formData.date}
+                                  id="preferred_date"
+                                  value={formData.preferred_date}
                                   onChange={handleChange}
                                   required 
                                 />
                             </div>
 
                             <div className="col-md-6">
-                                <label htmlFor="time" className="form-label fw-bold">Pickup Time</label>
+                                <label htmlFor="preferred_time" className="form-label fw-bold">Pickup Time</label>
                                 <input 
                                   type="time" 
                                   className="form-control rounded-3"
-                                  id="time"
-                                  value={formData.time}
+                                  id="preferred_time"
+                                  value={formData.preferred_time}
                                   onChange={handleChange}
                                   required 
                                 />
@@ -126,19 +132,25 @@ const Form = () => {
                                   required
                                 >
                                     <option value="">Select a service</option>
-                                    <option value="standard">Standard Pickup</option>
+                                    {Array.isArray(serviceOptions) && serviceOptions.map((service) => (
+                                        <option key={service.id} value={service.id}>
+                                            {service.name}
+                                        </option>
+                                    ))}
+                                    
+                                    {/* <option value="standard">Standard Pickup</option>
                                     <option value="express">Express Pickup</option>
-                                    <option value="same-day">Same Day Pickup</option>
+                                    <option value="same-day">Same Day Pickup</option> */}
                                 </select>
                             </div>
 
                             <div className="col-12">
-                                <label htmlFor="address" className="form-label fw-bold">Pickup Address</label>
+                                <label htmlFor="pickup_address" className="form-label fw-bold">Pickup Address</label>
                                 <textarea 
                                   className="form-control rounded-3"
-                                  id="address" 
+                                  id="pickup_address" 
                                   rows="1"
-                                  value={formData.address}
+                                  value={formData.pickup_address}
                                   onChange={handleChange}
                                   placeholder="Enter your pickup address"
                                   required
@@ -147,18 +159,30 @@ const Form = () => {
                             </div>
 
                             <div className="col-12">
-                                <label htmlFor="note" className="form-label fw-bold">Additional Notes</label>
+                                <label htmlFor="notes" className="form-label fw-bold">Special Instructions</label>
                                 <textarea
                                   className="form-control rounded-3"
-                                  id="note"
+                                  id="notes"
                                   rows="2"
                                   placeholder="Any special instructions for pickup?"
+                                  value={formData.notes}
+                                  onChange={handleChange}
                                 ></textarea>
                             </div>
 
                             <div className="col-12 text-center mt-4">
-                                <button type="submit" className="btn btn-primary btn-md px-5 rounded-pill">Schedule Pickup</button>
+                                <button type="submit" className="btn btn-primary btn-md px-5 rounded-pill" disabled={loading}>
+                                    {loading ? (
+                                        <>
+                                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                            Processing...
+                                        </>
+                                    ) : (
+                                        'Schedule Pickup'
+                                    )}
+                                </button>
                             </div>
+                            
                         </div>
                     </form>
                 </div>

@@ -22,7 +22,7 @@ function App() {
           {/* Add more routes as needed */}
           <Route path="*" element={<div>404 Not Found</div>} />
         </Routes>
-        <ToastContainer position="top-right" hideProgressBar={true} newestOnTop closeOnClick pauseOnHover theme="dark"/>
+        <ToastContainer position="top-right" hideProgressBar={true} newestOnTop closeOnClick pauseOnHover theme="light"/>
       </div>
     </Router>
   )
