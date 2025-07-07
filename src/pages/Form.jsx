@@ -58,7 +58,7 @@ const Form = () => {
   return (
     <div style={{ backgroundColor: '#fff', paddingTop: '80px', color: '#000' }}>
         {/* Floating Shape Top Left */}
-        <img src={shape1} alt="Shape" className="position-absolute floating-shape" style={{top: '50px',left: 0,width: '80px',zIndex: 1,}}/>
+        {/* <img src={shape1} alt="Shape" className="position-absolute floating-shape" style={{top: '50px',left: 0,width: '80px',zIndex: 1,}}/> */}
 
         <Header />
 

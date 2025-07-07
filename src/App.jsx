@@ -7,6 +7,7 @@ import Index from './pages/Index'
 import Prices from './pages/Prices';
 import Form from './pages/Form';
 import Dashboard from './pages/Admin/Dashboard';
+import Login from './pages/Auth/Login';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Index />} />
           <Route path="/prices" element={<Prices />} />
           <Route path="/form" element={<Form />} />
+          <Route path="/admin/login" element={<Login />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
           {/* Add more routes as needed */}
           <Route path="*" element={<div>404 Not Found</div>} />

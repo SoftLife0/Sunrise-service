@@ -7,10 +7,13 @@ const Footer = () => {
     <footer className="py-5  text-white text-center" style={{background: "#008080"}}> 
       <div className="container">
         <div className="mx-auto text-center d-flex justify-content-center align-items-center">
+          <Link to="/admin/login">
             <img src={logo} alt="Sunrise Laundry" className="footer-logo mb-2" style={{height: "70px"}} />
+          </Link>
         </div>
-        <p className="mb-0">© {new Date().getFullYear()} Sunrise Laundry Service. All rights reserved.</p>        
-        <p className="mb-0">Powered by Mirjy <Link to="/admin/dashboard">Tech</Link>.</p>
+        <hr />     
+        <small className="mb-3">© {new Date().getFullYear()}. All rights reserved.</small>   
+        <h6 className="mb-0">Powered by <a to="https://www.mirjy.com" style={{textDecoration: "none"}}>Mirjy Technologies Ltd</a></h6>
       </div>
     </footer>
   )

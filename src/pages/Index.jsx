@@ -9,7 +9,7 @@ import Footer from '../components/Footer';
 const Index = () => {
 
   const steps = [
-    { title: 'Schedule Pickup', icon: 'bi bi-calendar-check' },
+    { title: 'Pickup / Dropoff', icon: 'bi bi-calendar-check' },
     { title: 'We Collect & Sort', icon: 'bi bi-truck' },
     { title: 'Clean & Press', icon: 'bi bi-sun' }, 
     { title: 'Delivery to You', icon: 'bi bi-gift' },    
@@ -26,13 +26,13 @@ const Index = () => {
   return (
     <div style={{ backgroundColor: '#fff', minHeight: '100vh', color: '#3D251E', position: 'relative' }}>
       {/* Floating Shape Top Left */}
-      <img src={shape1} alt="Shape" className="position-absolute floating-shape" style={{top: '50px',left: 0,width: '80px',zIndex: 1,}}/>
+      {/* <img src={shape1} alt="Shape" className="position-absolute floating-shape" style={{top: '50px',left: 0,width: '80px',zIndex: 1,}}/> */}
 
       {/* Header */}
       <Header />
 
       {/* Hero */}
-      <section className="d-flex align-items-center" style={{ minHeight: '85vh', paddingTop: '120px', background: "#fff" }}>
+      <section className="d-flex align-items-center" style={{ minHeight: '85vh', paddingTop: '150px', background: "#fff" }}>
         <div className="container">
           <div className="row align-items-center">
             {/* Left */}
@@ -278,12 +278,12 @@ const Index = () => {
 
           <div className="col-sm-6 col-lg-4">
             <div className="text-center p-4">
-              <a href="https://www.tiktok.com/@sunrise_laundryservice?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" className="text-decoration-none">
+              <a href="https://wa.me/233557600158" target="_blank" rel="noopener noreferrer" className="text-decoration-none">
                 <div className="rounded-circle shadow d-inline-flex align-items-center justify-content-center mb-3" style={{ width: 80, height: 80, background: '#008080', color: '#fff' }}>
-                  <i className="bi bi-tiktok fs-2"></i>
+                  <i className="bi bi-whatsapp fs-2"></i>
                 </div>
-                <h6 style={{color: "#3D251E"}}>Tiktok</h6>
-                <p className="mb-0">@sunrise_laundryservice</p>
+                <h6 style={{color: "#3D251E"}}>Whatsapp</h6>
+                <p className="mb-0">(055) 760-0158</p>
               </a>
             </div>
           </div>
@@ -299,7 +299,8 @@ const Index = () => {
           width="100%" 
           height="100%" 
           style={{border: 0}}
-          allowFullScreen="" 
+          allow="fullscreen"
+          allowFullScreen={true}
           loading="lazy" 
           referrerPolicy="no-referrer-when-downgrade">
         </iframe>
