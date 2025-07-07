@@ -66,10 +66,10 @@ const Form = () => {
             <div className="row justify-content-center">
                 <div className="col-lg-8">
                     <div className="text-center mb-3">
-                        <h6 className="mb-3 text-primary">Pickup Request Form</h6>
+                        <h6 className="mb-3" style={{color: '#008080'}}>Pickup Request Form</h6>
                         <h2 className="display-5 fw-bold">Schedule Your Pickup</h2>
-                        <div className="bg-black mx-auto mt-3 mb-5" style={{ width: '60px', height: '3px' }}></div>
-                        <Link to="/prices" className="btn text-white btn-md " style={{background: '#e03e2c'}}>Check Out Our Prices</Link>
+                        <div className="mx-auto mt-3 mb-5" style={{ width: '60px', height: '3px', background: '#D3A745' }}></div>
+                        <Link to="/prices" className="btn text-white btn-md " style={{background: '#008080'}}>Check Out Our Prices</Link>
                     </div>
 
                     <form className="card shadow-lg p-3 bg-light" onSubmit={handleSubmit}>
@@ -177,7 +177,7 @@ const Form = () => {
                             </div>
 
                             <div className="col-12 text-center mt-4">
-                                <button type="submit" className="btn btn-primary btn-md px-5 rounded-pill" disabled={loading}>
+                                <button type="submit" className="btn text-white btn-md px-5" style={{background: '#D3A745'}} disabled={loading}>
                                     {loading ? (
                                         <>
                                             <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>

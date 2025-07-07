@@ -85,16 +85,13 @@ const Index = () => {
       </section>
 
       {/* CTA section */}
-      <section className="py-5 text-center text-white" style={{background: '#008080'}}>
+      {/* <section className="py-5 text-center text-white" style={{background: '#008080'}}>
         <div className="container">
           <h2 className="display-5 fw-bold mb-2">We Commit to Quality and Reliability</h2>
         </div>
-      </section>
+      </section> */}
 
-    <section
-      className="position-relative py-5" style={{background: '#D3A745', color: '#3D251E'}}
-      
-    >
+    <section className="position-relative py-5" style={{background: '#008080', color: ''}}>
       {/* Dark Mask */}
       <div className="position-absolute top-0 start-0 w-100 h-100"/>
 
@@ -103,10 +100,10 @@ const Index = () => {
         {/* Header */}
         <div className="row justify-content-center text-center mb-5">
           <div className="col-lg-8">
-            <h6 className="mb-3" style={{color: '#008080'}}>Moving with us!</h6>
-            <h2 className="display-5 fw-bold">How This Works?</h2>
+            <h6 className="mb-3" style={{color: '#fff'}}>Moving with us!</h6>
+            <h2 className="display-5 fw-bold text-white">How This Works?</h2>
             <div className="mx-auto mt-3 mb-4" style={{ width: '60px', height: '3px', background: '#D3A745' }}></div>
-            <p className="lead">
+            <p className="lead text-white">
               We make the process easy and reliable. From booking to delivery, you're in good hands with Sunrise.
             </p>
           </div>
@@ -117,10 +114,10 @@ const Index = () => {
           {steps.map((step, index) => (
             <div key={index} className="col-sm-6 col-lg-3">
               <div className="text-center p-4">
-                <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style={{ width: 70, height: 70, border: '2px solid #008080', color: '#008080' }}>                    
+                <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style={{ width: 70, height: 70, border: '2px solid #fff', color: '#fff' }}>                    
                   <i className={`${step.icon} fs-4 fw-bold`}></i>                                    
                 </div>
-                <h5>{step.title}</h5>
+                <h5 className='text-white'>{step.title}</h5>
               </div>
             </div>
           ))}
