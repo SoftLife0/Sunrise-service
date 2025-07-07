@@ -3,7 +3,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { apiService } from '../services/apiService'
 import shape1 from '../assets/shape1.png';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
 
 
@@ -11,6 +11,7 @@ const Form = () => {
   const [formData, setFormData] = useState({customer_name: '',phone: '',preferred_date: '',preferred_time: '',pickup_address: '',service: '', notes: '', latitude: '', longitude: '', email: ''})
   const [serviceOptions, setServiceOptions] = useState([])
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { id, value } = e.target
@@ -44,6 +45,7 @@ const Form = () => {
       const response = await apiService.post('/request/', formData)
       console.log('Response:', response)
       toast.success("Pickup scheduled successfully!", { position: 'top-right', hideProgressBar: true });
+      navigate('/prices')
       setFormData({customer_name: '',phone: '',preferred_date: '',preferred_time: '',pickup_address: '',service: '',notes: '',latitude: '',longitude: '',email: ''})
     } catch (error) {
       toast.error("Error scheduling pickup.", { position: 'top-right', hideProgressBar: true });

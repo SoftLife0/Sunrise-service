@@ -1,13 +1,14 @@
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import StatusBadge from '../../components/StatusBadge';
 import { Offcanvas } from 'react-bootstrap';
 import { apiService } from '../../services/apiService';
 
+
 const Dashboard = () => {
-    const [show, setShow] = useState(false);
-    const [selectedRequest, setSelectedRequest] = useState(null);
-    const [pickupRequests, setPickupRequests] = useState([]);
+  const [show, setShow] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState(null);
+  const [pickupRequests, setPickupRequests] = useState([]);
 
   const handleClose = () => setShow(false);
   const handleShow = (request) => {
@@ -122,7 +123,7 @@ const Dashboard = () => {
           </div>
 
 
-          <div className="row g-4">
+          <div className="row g-4 mb-5">
             {Array.isArray(pickupRequests?.requests) && pickupRequests?.requests.map((request, index) => (
               <div key={index} className="col-md-4">
                 <div className="card shadow-lg h-100 border-0" 
