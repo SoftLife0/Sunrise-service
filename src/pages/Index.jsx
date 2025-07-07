@@ -278,12 +278,12 @@ const Index = () => {
 
           <div className="col-sm-6 col-lg-4">
             <div className="text-center p-4">
-              <a href="https://www.google.com/maps/dir/5.75669,0.084162/Prampram+rd/@5.7539063,0.0774943,16z/data=!3m1!4b1!4m10!4m9!1m1!4e1!1m5!1m1!1s0x10208733f620c33b:0x5c3db980e23e679c!2m2!1d0.0835447!2d5.7498299!3e0?entry=ttu&g_ep=EgoyMDI1MDYzMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" className="text-decoration-none">
+              <a href="https://www.tiktok.com/@sunrise_laundryservice?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" className="text-decoration-none">
                 <div className="rounded-circle shadow d-inline-flex align-items-center justify-content-center mb-3" style={{ width: 80, height: 80, background: '#008080', color: '#fff' }}>
-                  <i className="bi bi-geo-alt-fill fs-2"></i>
+                  <i className="bi bi-tiktok fs-2"></i>
                 </div>
-                <h6 style={{color: "#3D251E"}}>Location</h6>
-                <p className="mb-0">Find us on map</p>
+                <h6 style={{color: "#3D251E"}}>Tiktok</h6>
+                <p className="mb-0">@sunrise_laundryservice</p>
               </a>
             </div>
           </div>
@@ -291,6 +291,20 @@ const Index = () => {
         </div>                
       </div>
     </section>
+
+    <section>
+      <div className="shadow rounded overflow-hidden" style={{height: '600px'}}>
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.5647563274387!2d0.08135467605459437!3d5.749829994572787!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x10208733f620c33b%3A0x5c3db980e23e679c!2sPrampram%20rd!5e0!3m2!1sen!2sgh!4v1708101548744!5m2!1sen!2sgh"
+          width="100%" 
+          height="100%" 
+          style={{border: 0}}
+          allowFullScreen="" 
+          loading="lazy" 
+          referrerPolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </section>    
 
     {/* Footer */}
     <Footer />

@@ -35,21 +35,22 @@ const Dashboard = () => {
         value: pickupRequests?.count || "0",
         subtext: "New pickup requests",
         icon: <i className="bi bi-archive"></i>,
-        gradient: "linear-gradient(45deg, #FF6B6B, #FF8E8E)"
+        gradient: "linear-gradient(45deg, #4ECDC4, #45B7AF)"
+
     },
     {
         title: "All Requests",
         value: "0", 
         subtext: "Total pickup requests",
         icon: <i className="bi bi-clipboard-check"></i>,
-        gradient: "linear-gradient(45deg, #4ECDC4, #45B7AF)"
+        gradient: "linear-gradient(45deg, #FF6B6B, #FF8E8E)"
     },
     {
         title: "All Customers",
         value: "0",
         subtext: "View customers list",
         icon: <i className="bi bi-person"></i>,
-        gradient: "linear-gradient(45deg, #FFD93D, #FFE566)"
+        gradient: "linear-gradient(45deg, #D3A745, #D3A745)"
     }
   ];
 
