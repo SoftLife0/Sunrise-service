@@ -124,26 +124,30 @@ const Form = () => {
                                 />
                             </div>
 
-                            <div className="col-12">
-                                <label htmlFor="service" className="form-label fw-bold">Service Type</label>
-                                <select 
-                                  className="form-select rounded-3"
-                                  id="service"
-                                  value={formData.service}
-                                  onChange={handleChange}
-                                  required
-                                >
-                                    <option value="">Select a service</option>
-                                    {Array.isArray(serviceOptions) && serviceOptions.map((service) => (
-                                        <option key={service.id} value={service.id}>
-                                            {service.name}
-                                        </option>
-                                    ))}
-                                    
-                                    {/* <option value="standard">Standard Pickup</option>
-                                    <option value="express">Express Pickup</option>
-                                    <option value="same-day">Same Day Pickup</option> */}
-                                </select>
+                            <div className="row mt-3">
+                                <div className="col-8">
+                                    <label htmlFor="service" className="form-label fw-bold">Service Type</label>
+                                    <select 
+                                      className="form-select rounded-3"
+                                      id="service"
+                                      value={formData.service}
+                                      onChange={handleChange}
+                                      required
+                                    >
+                                        <option value="">Select a service</option>
+                                        {Array.isArray(serviceOptions) && serviceOptions.map((service) => (
+                                            <option key={service.id} value={service.id}>
+                                                {service.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="col-4">
+                                    <label className="form-label fw-bold">Estimated Duration</label>
+                                    <div className="form-control rounded-3 bg-light">
+                                        {formData.service && serviceOptions.find(s => s.id === parseInt(formData.service))?.duration_in_days || '-'} days
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="col-12">
