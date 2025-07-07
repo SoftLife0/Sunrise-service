@@ -84,8 +84,15 @@ const Index = () => {
         </div>
       </section>
 
+      {/* CTA section */}
+      <section className="py-5 text-center text-white" style={{background: '#008080'}}>
+        <div className="container">
+          <h2 className="display-5 fw-bold mb-2">We Commit to Quality and Reliability</h2>
+        </div>
+      </section>
+
     <section
-      className="position-relative py-5" style={{background: '#F5F5DC', color: '#3D251E'}}
+      className="position-relative py-5" style={{background: '#D3A745', color: '#3D251E'}}
       
     >
       {/* Dark Mask */}
@@ -121,15 +128,8 @@ const Index = () => {
       </div>
     </section>
 
-    {/* CTA section */}
-    <section className="py-5 text-white text-center" style={{background: '#3D251E'}}>
-      <div className="container">
-        <h2 className="display-5 fw-bold mb-2">Experience the Magic of Effortless Laundry</h2>
-      </div>
-    </section>
-
     {/* Pricing section */}
-    <section className="py-5 text-center" style={{background: '#F5F5DC', color: '#3D251E'}}>
+    <section className="py-5 text-center">
       <div className="container">
         <div className='mb-5'>
           <h6 className="mb-3" style={{color: '#008080'}}>Our Pricing</h6>
@@ -141,14 +141,20 @@ const Index = () => {
         <div className="row justify-content-center mt-4">
           {plans.map((plan, index) => (
             <div key={index} className="col-md-4 mb-3">
-              <div className="card border-0 shadow-sm" style={{background: '#FFFDD0'}}>
+              <div className="card border-0 shadow-md" style={{
+                    borderRadius: '20px',
+                    transform: 'translateY(0)',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
                 <img src={plan.image} className="card-img-top" alt="Basic Laundry" style={{height: "200px", objectFit: "cover"}} />
                 <div className="card-body py-4">
-                  <h6 className="card-title">{plan.name}</h6>
-                  <h2 className="card-price mb-2 fw-bold" style={{color: '#D3A745'}}>{plan.price}</h2>                  
+                  <h6 className="card-title" style={{color: '#008080'}}>{plan.name}</h6>
+                  <h2 className="card-price mb-2 fw-bold" style={{color: '#000'}}>{plan.price}</h2>                  
                   <p className="mb-0">{plan.description}</p>
                   
-                  <Link to={plan.link} className="btn mt-3" style={{background: '#008080', color: '#FFFDD0'}}>Choose Plan</Link>
+                  <Link to={plan.link} className="btn mt-3 text-white" style={{background: '#008080'}}>Choose Plan</Link>
                 </div>
 
               </div>
@@ -235,7 +241,7 @@ const Index = () => {
     </section>
 
     {/* Contact section */}
-    <section className="py-5 text-black" style={{background: '#F5F5DC'}}>
+    <section className="py-5 text-black">
       <div className="container">
         <div className="row justify-content-center text-center mb-5">
           <div className="col-lg-8">
