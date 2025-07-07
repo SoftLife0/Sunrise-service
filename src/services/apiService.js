@@ -1,7 +1,8 @@
 import axios from "axios";
 
 // Use Vite's environment variable system
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+// const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = "https://api.mirjy.com/sunrise/v1/api";
 
 class ApiService {
     constructor() {
