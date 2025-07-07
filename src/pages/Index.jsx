@@ -24,7 +24,7 @@ const Index = () => {
 
 
   return (
-    <div style={{ backgroundColor: '#FFFDD0', minHeight: '100vh', color: '#3D251E', position: 'relative' }}>
+    <div style={{ backgroundColor: '#fff', minHeight: '100vh', color: '#3D251E', position: 'relative' }}>
       {/* Floating Shape Top Left */}
       <img src={shape1} alt="Shape" className="position-absolute floating-shape" style={{top: '50px',left: 0,width: '80px',zIndex: 1,}}/>
 
@@ -32,18 +32,18 @@ const Index = () => {
       <Header />
 
       {/* Hero */}
-      <section className="d-flex align-items-center" style={{ minHeight: '85vh', paddingTop: '120px', background: "#FFFDD0" }}>
+      <section className="d-flex align-items-center" style={{ minHeight: '85vh', paddingTop: '120px', background: "#fff" }}>
         <div className="container">
           <div className="row align-items-center">
             {/* Left */}
             <div className="col-lg-6 mb-5 mb-lg-0">
               <div className="text-center text-lg-start">
-                <h1 className="mb-4 display-4 fw-bold text-black"><span style={{color: '#008080'}}>Fresh</span> laundry delivered to your <span style={{color: '#D3A745'}}>Doorstep</span>!</h1>
+                <h1 className="mb-4 display-4 fw-bold text-black"><span style={{color: '#008080'}}>Sunrise</span> laundry service at your <span style={{color: '#D3A745'}}>Doorstep</span>!</h1>
                 <p className="mb-4 fs-5" style={{color: '#3D251E'}}>Experience premium laundry service tailored to your needs. We handle everything from pickup to delivery, including washing, drying, folding, and ironing.</p>   
 
                 <div className="d-flex justify-content-center justify-content-lg-start gap-3">
                   <Link to="/form" className="btn text-white btn-md px-4 py-2" style={{background: '#D3A745'}}>Schedule Your Pick Up</Link>
-                  <Link to="/prices" className="btn btn-md px-4 py-2" style={{background: '#008080', color: '#FFFDD0'}}>See Prices</Link>
+                  <Link to="/prices" className="btn text-white btn-md px-4 py-2" style={{background: '#008080'}}>See Prices</Link>
                 </div>                
               </div>  
             </div>

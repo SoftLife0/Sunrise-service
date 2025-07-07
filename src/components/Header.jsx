@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <header className="border-bottom fixed-top shadow-sm z-3" style={{ backgroundColor: '#FFFDD0'}}>
-      <nav className="navbar navbar-expand-lg fixed-top " style={{ backgroundColor: '#FFFDD0'}}>
+    <header className="border-bottom fixed-top shadow-sm z-3" >
+      <nav className="navbar navbar-expand-lg fixed-top ">
         <div className="container">
           <Link className="navbar-brand fw-bold text-black" to="/">🌅 Sunrise</Link>
-          <a href="tel:+233557600158" className="btn btn-md px-4 py-2" style={{background: "#008080", color: "#FFFDD0"}} >Contact Us</a>
+          <a href="tel:+233557600158" className="btn text-white btn-md px-4 py-2" style={{background: "#008080"}} >Contact Us</a>
           
           
 
