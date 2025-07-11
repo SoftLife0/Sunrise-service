@@ -1,10 +1,11 @@
 import React from 'react';
-import heroMain from '../assets/cloth.png';
-import whyImg from '../assets/serve.jpeg';
-import shape1 from '../assets/shape1.png';
+import heroMain from '../assets/why3.png';
+import whyImg from '../assets/why5.jpg';
+import shape1 from '../assets/newhero.png';
 import Header from '../components/Header';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
+import test from '../assets/s4.png'
 
 const Index = () => {
 
@@ -16,9 +17,9 @@ const Index = () => {
   ];
 
   const plans = [
-    { name: 'Student', price: 'GH₵90-150', description: 'Basic wash & fold service for students with free pickup and delivery', link: '/prices', image: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60' },
-    { name: 'Standard', price: 'GH₵100-200', description: 'Weekly laundry service with wash, dry and fold included', link: '/prices', image: 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c' },
-    { name: 'VIP', price: 'GH₵150-250', description: 'Premium service with wash, dry, iron and express delivery', link: '/prices', image: 'https://images.unsplash.com/photo-1489274495757-95c7c837b101?q=80&w=1015&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },    
+    { name: 'Student', price: 'GH₵90-150', description: 'Basic wash & fold service for students', link: '/prices', image: 'https://images.unsplash.com/photo-1641648538518-6f86b43a5baf?q=80&w=2068&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+    { name: 'Standard', price: 'GH₵100-200', description: 'Laundry service with wash, dry and fold included', link: '/prices', image: 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c' },
+    { name: 'VIP', price: 'GH₵150-250', description: 'Premium service with wash, dry and iron', link: '/prices', image: 'https://images.unsplash.com/photo-1489274495757-95c7c837b101?q=80&w=1015&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },    
   ];
   
 
@@ -32,14 +33,21 @@ const Index = () => {
       <Header />
 
       {/* Hero */}
-      <section className="d-flex align-items-center" style={{ minHeight: '85vh', paddingTop: '150px', background: "#fff" }}>
+      <section className="d-flex align-items-center" style={{ minHeight: '85vh', paddingTop: '140px', background: "#fff" }}>
         <div className="container">
           <div className="row align-items-center">
             {/* Left */}
             <div className="col-lg-6 mb-5 mb-lg-0">
               <div className="text-center text-lg-start">
-                <h1 className="mb-4 display-4 fw-bold text-black"><span style={{color: '#008080'}}>Sunrise</span> laundry service at your <span style={{color: '#D3A745'}}>Doorstep</span>!</h1>
-                <p className="mb-4 fs-5" style={{color: '#3D251E'}}>Experience premium laundry service tailored to your needs. We handle everything from pickup to delivery, including washing, drying, folding, and ironing.</p>   
+                <div className='mb-4'>
+                    <img src={test} alt="Sunrise" style={{ height: "100px", verticalAlign: "baseline", margin: "0 auto"}}/>
+                </div>     
+
+                <div>
+                  <h3 className="fw-bold text-black">Quality laundry service at your <span style={{color: '#D3A745'}}>Doorstep</span>!</h3>                   
+                  <p className="mb-4 fs-5 text-muted" >Professional & express dry wash services with eco-friendly washing and friendly staff. The best in the area, we also provide pick up & drop off service for our busy customers. Laundry is ready for pickup within 48 hours! We offer Wash & Fold, Hand Wash Delicates, Color-separated wash, Formal wear wash & care, and Stain Removal.</p>   
+                </div>
+
 
                 <div className="d-flex justify-content-center justify-content-lg-start gap-3">
                   <Link to="/form" className="btn text-white btn-md px-4 py-2" style={{background: '#D3A745'}}>Schedule Your Pick Up</Link>
@@ -61,7 +69,7 @@ const Index = () => {
 
                 {/* Thumbnails */}
                 <img
-                  src="https://images.unsplash.com/photo-1517677208171-0bc6725a3e60"
+                  src="https://images.unsplash.com/photo-1641648538518-6f86b43a5baf?q=80&w=2068&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                   alt="Thumb1"
                   className="position-absolute rounded-circle border border-white shadow"
                   style={{ width: '80px', height: '80px', top: '0px', left: 0 }}
@@ -278,12 +286,12 @@ const Index = () => {
 
           <div className="col-sm-6 col-lg-4">
             <div className="text-center p-4">
-              <a href="https://wa.me/233557600158" target="_blank" rel="noopener noreferrer" className="text-decoration-none">
+              <a href="https://www.tiktok.com/@sunrise_laundryservice?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" className="text-decoration-none">
                 <div className="rounded-circle shadow d-inline-flex align-items-center justify-content-center mb-3" style={{ width: 80, height: 80, background: '#008080', color: '#fff' }}>
-                  <i className="bi bi-whatsapp fs-2"></i>
+                  <i className="bi bi-tiktok fs-2"></i>
                 </div>
-                <h6 style={{color: "#3D251E"}}>Whatsapp</h6>
-                <p className="mb-0">(055) 760-0158</p>
+                <h6 style={{color: "#3D251E"}}>TikTok</h6>
+                <p className="mb-0">@sunrise_laundryservice</p>
               </a>
             </div>
           </div>

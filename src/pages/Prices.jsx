@@ -17,7 +17,10 @@ const Prices = () => {
                     <div className="text-center mb-3">
                         <h6 className=" mb-3" style={{color: '#008080'}}>Pricing Plans</h6>
                         <h2 className="display-5 fw-bold ">Top Quality at Competitive Rates</h2>
-                        <div className="mx-auto mt-3 mb-5" style={{ width: '60px', height: '3px', background: '#D3A745' }}></div>
+                        <div className="mx-auto mt-3 mb-4" style={{ width: '60px', height: '3px', background: '#D3A745' }}></div>
+                        <p className="text-danger mb-3">
+                            * Prices may decrease based on the volume of items in your laundry basket. Contact us for volume-based pricing.
+                        </p>
                     </div>
 
                     <div className="pricing-table">
@@ -31,30 +34,39 @@ const Prices = () => {
                         <div className="pricing-item d-flex justify-content-between align-items-center border-bottom py-3">
                             <div>
                                 <span>Wash, Dry & Fold (Standard)</span>
-                                <div className="text-muted small">Premium Detergent</div>
+                                <div className="text-muted small">Standard Detergent / Softner</div>
+                                <div className="small">Ironing (₵50.00)</div>
+
                             </div>
                             <span className="fw-bold">₵100.00 - ₵200.00</span>
+                            
                         </div>
                         <div className="pricing-item d-flex justify-content-between align-items-center border-bottom py-3">
                             <div>
                                 <span>Wash, Dry & Fold (VIP)</span>
-                                <div className="text-muted small">Premium Detergent / Softner</div>
+                                <div className="text-muted small">Premium Detergent / Softner / Ironing</div>
                             </div>
                             <span className="fw-bold">₵150.00 - ₵250.00</span>
                         </div>
                         <div className="pricing-item d-flex justify-content-between align-items-center border-bottom py-3">
                             <div>
-                                <span>Large Basket</span>
+                                <span>Kente Cloth</span>
                                 <div className="text-muted small">Plus Fold & Iron</div>
                             </div>
-                            <span className="fw-bold">₵200.00</span>
+                            <span className="fw-bold">₵100.00 per cloth</span>
                         </div>
                         <div className="pricing-item d-flex justify-content-between align-items-center border-bottom py-3">
                             <div>
-                                <span>Small Basket</span>
-                                <div className="text-muted small">Plus Fold & Iron</div>
+                                <span>Rug Cleaning</span>
+                                <div className="text-muted small">Pickup / Dropoff</div>
                             </div>
-                            <span className="fw-bold">₵120.00</span>
+                            <span className="fw-bold">Prices varies by size</span>
+                        </div>
+                        <div className="pricing-item d-flex justify-content-between align-items-center border-bottom py-3">
+                            <div>
+                                <span>Blankets & Duvet</span>
+                            </div>
+                            <span className="fw-bold">₵40.00 - ₵50.00</span>
                         </div>
                         <div className="pricing-item d-flex justify-content-between align-items-center border-bottom py-3">
                             <div>
