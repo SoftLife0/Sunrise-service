@@ -44,8 +44,8 @@ const Index = () => {
                 </div>     
 
                 <div>
-                  <h3 className="fw-bold text-black">Quality laundry service at your <span style={{color: '#D3A745'}}>Doorstep</span>!</h3>                   
-                  <p className="mb-4 fs-5 text-muted" >Professional & express dry wash services with eco-friendly washing and friendly staff. The best in the area, we also provide pick up & drop off service for our busy customers. Laundry is ready for pickup within 48 hours! We offer Wash & Fold, Hand Wash Delicates, Color-separated wash, Formal wear wash & care, and Stain Removal.</p>   
+                  <h3 className="fw-bold text-black"><span style={{color: '#008080'}}>Quality</span> laundry service at your <span style={{color: '#D3A745'}}>Doorstep</span>!</h3>                   
+                  <p className="mb-4 fs-5 text-muted" >Professional & express dry wash services with eco-friendly washing and friendly staff. The best in the area, laundry is ready for pickup within 48 hours! We offer <strong>Wash & Fold, Hand Wash Delicates, Color-separated wash, Formal wear wash & care, and Stain Removal</strong>.</p>                  
                 </div>
 
 

@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 const Form = () => {
   const [formData, setFormData] = useState({customer_name: '',phone: '',preferred_date: '',preferred_time: '',pickup_address: '',service: '', notes: '', latitude: '', longitude: '', email: ''})
   const [serviceOptions, setServiceOptions] = useState([])
+  const [dropdownOpen, setDropdownOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -24,7 +25,7 @@ const Form = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await apiService.get('/services');
+        const response = await apiService.get('/services/');
         console.log('Services:', response);
         setServiceOptions(response);
 
@@ -125,29 +126,61 @@ const Form = () => {
                             </div>
 
                             <div className="row mt-3">
-                                <div className="col-8">
-                                    <label htmlFor="service" className="form-label fw-bold">Service Type</label>
+                                <div className="col-7">
+                                      <label htmlFor="service" className="form-label fw-bold">Service Type</label>
+                                      <div className="position-relative">
+                                          <div 
+                                              className="form-select rounded-3"
+                                              onClick={() => setDropdownOpen(!dropdownOpen)}
+                                              style={{cursor: 'pointer'}}
+                                          >
+                                              {formData.service.length ? `${formData.service.length} services selected` : 'Select services'}
+                                          </div>
+                                          
+                                          {dropdownOpen && (
+                                              <div className="dropdown position-absolute w-100 bg-white border rounded-3 mt-1" style={{zIndex: 1000}}>
+                                                  {Array.isArray(serviceOptions) && serviceOptions.length > 0 ? (
+                                                      serviceOptions.map((service) => (
+                                                          <label key={service.id} className="d-block px-3 py-2 m-0" style={{cursor: 'pointer'}}>
+                                                              <input 
+                                                                  type="checkbox"
+                                                                  className="me-2"
+                                                                  checked={formData.service.includes(service.id)}
+                                                                  onChange={() => {
+                                                                      const updatedServices = formData.service.includes(service.id)
+                                                                          ? formData.service.filter(id => id !== service.id)
+                                                                          : [...formData.service, service.id];
+                                                                      setFormData(prev => ({...prev, service: updatedServices}));
+                                                                  }}
+                                                              />
+                                                              {service.name}
+                                                          </label>
+                                                      ))
+                                                  ) : (
+                                                      <p className="m-0 p-3">No services available</p>
+                                                  )}
+                                              </div>
+                                          )}
+                                      </div>
+                                  </div>
+
+                                <div className="col-5">
+                                    <label className="form-label fw-bold">Duration</label>
                                     <select 
                                       className="form-select rounded-3"
-                                      id="service"
-                                      value={formData.service}
+                                      id="duration"
+                                      value={formData.duration}
                                       onChange={handleChange}
-                                      required
                                     >
-                                        <option value="">Select a service</option>
-                                        {Array.isArray(serviceOptions) && serviceOptions.map((service) => (
-                                            <option key={service.id} value={service.id}>
-                                                {service.name}
-                                            </option>
-                                        ))}
+                                        <option value="">Select duration</option>
+                                        <option value="Same Day Express">Same Day Express</option>
+                                        <option value="Next Day Service">Next Day Service</option>
+                                        <option value="2-Day Service">2-Day Service</option>
+                                        <option value="3-Day Service">3-Day Service</option>                                        
+                                        <option value="Others">Others</option>                                        
                                     </select>
                                 </div>
-                                <div className="col-4">
-                                    <label className="form-label fw-bold">Estimated Duration</label>
-                                    <div className="form-control rounded-3 bg-light">
-                                        {formData.service && serviceOptions.find(s => s.id === parseInt(formData.service))?.duration_in_days || '-'} days
-                                    </div>
-                                </div>
+                                
                             </div>
 
                             <div className="col-12">
