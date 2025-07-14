@@ -3,23 +3,57 @@ import Header from '../../components/Header'
 import StatusBadge from '../../components/StatusBadge';
 import { Offcanvas } from 'react-bootstrap';
 import { apiService } from '../../services/apiService';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 const Dashboard = () => {
   const [show, setShow] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [pickupRequests, setPickupRequests] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState('');
+
 
   const handleClose = () => setShow(false);
   const handleShow = (request) => {
     setSelectedRequest(request);
+    setSelectedStatus(request.status);
     setShow(true);
+  };
+
+  const handleStatusChange = async (newStatus) => {
+    if (!selectedRequest) return;
+    setLoading(true);
+    
+    try {
+      await apiService.patch(`/request/${selectedRequest.id}/status/`, {
+        status: newStatus
+      });
+      toast.success('Status updated successfully!');
+      
+      setSelectedRequest({
+        ...selectedRequest,
+        status: newStatus
+      });
+      
+      // Refresh pickup requests
+      const response = await apiService.get('/requests/new/');
+      setPickupRequests(response);
+      setShow(false)
+      
+    } catch (error) {
+      console.error('Error updating status:', error);
+      toast.error('Failed to update status. Please try again.')
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     const fetchPickupRequests = async () => {
       try {
-        const response = await apiService.get('/requests/new/');
+        const response = await apiService.get('/requests/ready/');
         console.log('Pickup Requests:', response);
         setPickupRequests(response);
       } catch (error) {
@@ -31,33 +65,35 @@ const Dashboard = () => {
 
   const cardData = [
     {
-        title: "New Request",
+        title: "New Request", 
         value: pickupRequests?.count || "0",
         subtext: "New pickup requests",
         icon: <i className="bi bi-archive"></i>,
-        gradient: "linear-gradient(45deg, #4ECDC4, #45B7AF)"
-
+        gradient: "linear-gradient(45deg, #4ECDC4, #45B7AF)",
+        link: "#",
     },
     {
         title: "All Requests",
-        value: "0", 
-        subtext: "Total pickup requests",
+        value: "0",
+        subtext: "Total pickup requests", 
         icon: <i className="bi bi-clipboard-check"></i>,
-        gradient: "linear-gradient(45deg, #FF6B6B, #FF8E8E)"
+        gradient: "linear-gradient(45deg, #FF6B6B, #FF8E8E)",
+        link: "#",
     },
     {
         title: "All Customers",
         value: "0",
         subtext: "View customers list",
         icon: <i className="bi bi-person"></i>,
-        gradient: "linear-gradient(45deg, #D3A745, #D3A745)"
+        gradient: "linear-gradient(45deg, #D3A745, #D3A745)",
+        link: "/admin/customer",
     }
   ];
 
   return (
     <div style={{ 
       backgroundColor: '#f1f2f4',
-      minHeight: '100vh',
+      minHeight: '100vh', 
       color: '#000',
       position: 'relative',
       backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.8) 0%, rgba(241,242,244,0.8) 100%)'
@@ -91,25 +127,27 @@ const Dashboard = () => {
           <div className="row g-4 mb-4">
             {cardData.map((card, index) => (
               <div key={index} className="col-md-4">
-                <div className="card shadow-lg h-100 border-0" 
-                  style={{
-                    borderRadius: '20px',
-                    background: card.gradient,
-                    transform: 'translateY(0)',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'}
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-                >
-                  <div className="card-body p-5" style={{ color: '#fff' }}>
-                    <div className="mb-3" style={{fontSize: '2rem'}}>{card.icon}</div>
-                    <div className="mb-1">
-                      <h6 className="card-title mb-2">{card.title}</h6>
-                      <h4 className="mb-0" style={{fontSize: '2.5rem'}}>{card.value}</h4>
+                <Link to={card.link}>
+                  <div className="card shadow-lg h-100 border-0" 
+                    style={{
+                      borderRadius: '20px',
+                      background: card.gradient,
+                      transform: 'translateY(0)',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                  >
+                    <div className="card-body p-5" style={{ color: '#fff' }}>
+                      <div className="mb-3" style={{fontSize: '2rem'}}>{card.icon}</div>
+                      <div className="mb-1">
+                        <h6 className="card-title mb-2">{card.title}</h6>
+                        <h4 className="mb-0" style={{fontSize: '2.5rem'}}>{card.value}</h4>
+                      </div>
+                      <small className="mb-0" style={{opacity: 0.8}}>{card.subtext}</small>
                     </div>
-                    <small className="mb-0" style={{opacity: 0.8}}>{card.subtext}</small>
-                  </div>
                 </div>
+                </Link>
               </div>
             ))}
           </div>
@@ -185,21 +223,38 @@ const Dashboard = () => {
                         <small className="text-muted">Current Status:</small>
                         <StatusBadge status={selectedRequest.status} statusType="status" />
                     </div>
-                    <div className="d-flex gap-2 align-items-center">
+
+                    {selectedRequest.status === 'delivered' ? (
+                      <div className="alert alert-info">
+                        This request has been delivered and no further action can be taken.
+                      </div>
+                    ) : (
+                      <div className="d-flex gap-2 align-items-center">
                         <select 
-                            className="form-select"
-                            value={selectedRequest.status}
-                            onChange={(e) => handleStatusChange(e.target.value)}
+                          className="form-select"
+                          value={selectedStatus}
+                          onChange={(e) => setSelectedStatus(e.target.value)}
                         >
-                            <option value="PENDING_PICKUP">Pending Pickup</option>
-                            <option value="IN_WASH">In Wash</option>
-                            <option value="READY_FOR_RETURN">Ready for Return</option>
-                            <option value="COMPLETED">Completed</option>
+                          <option value="picked_up">Pending Pickup</option>
+                          <option value="washing">In Wash</option>
+                          <option value="ready">Ready for Return</option>
+                          <option value="delivered">Completed</option>
                         </select>
-                        <button className="btn btn-primary" onClick={() => handleStatusChange(selectedRequest.status)}>
-                            Update
+                        <button 
+                          className="btn btn-primary" 
+                          disabled={loading} 
+                          onClick={() => handleStatusChange(selectedStatus)}
+                        >
+                          {loading ? (
+                            <>
+                              <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            </>
+                          ) : (
+                            "Update"
+                          )}
                         </button>
-                    </div>
+                      </div>
+                    )}                    
                 </div>
 
                 <div className="card border-0 shadow-sm mb-4">
@@ -232,59 +287,6 @@ const Dashboard = () => {
                                     <i className="bi bi-geo-alt me-2"></i>
                                     {selectedRequest.pickup_address}
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="card border-0 shadow-sm mb-4">
-                        <div className="card-body">
-                            <h5 className="card-title mb-3">Order Details</h5>
-                            <div className="mb-3">
-                                <small className="text-muted d-block mb-1">Items</small>
-                                <ul className="list-unstyled">
-                                    <li className="d-flex justify-content-between mb-2">
-                                        <span>T-Shirts</span>
-                                        <span>x3</span>
-                                    </li>
-                                    <li className="d-flex justify-content-between mb-2">
-                                        <span>Pants</span>
-                                        <span>x2</span>
-                                    </li>
-                                    <li className="d-flex justify-content-between mb-2">
-                                        <span>Jackets</span>
-                                        <span>x1</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="mb-3">
-                                <small className="text-muted d-block mb-1">Special Instructions</small>
-                                <p className="mb-0">Please handle with care, delicate materials</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="card border-0 shadow-sm">
-                        <div className="card-body">
-                            <h5 className="card-title mb-3">Pricing Details</h5>
-                            <div className="mb-3">
-                                <ul className="list-unstyled">
-                                    <li className="d-flex justify-content-between mb-2">
-                                        <span>T-Shirts (3x)</span>
-                                        <span>$15.00</span>
-                                    </li>
-                                    <li className="d-flex justify-content-between mb-2">
-                                        <span>Pants (2x)</span>
-                                        <span>$20.00</span>
-                                    </li>
-                                    <li className="d-flex justify-content-between mb-2">
-                                        <span>Jackets (1x)</span>
-                                        <span>$25.00</span>
-                                    </li>
-                                    <li className="d-flex justify-content-between mt-3 pt-2 border-top">
-                                        <strong>Total</strong>
-                                        <strong>$60.00</strong>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>

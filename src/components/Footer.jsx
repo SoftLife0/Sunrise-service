@@ -12,7 +12,7 @@ const Footer = () => {
           </Link>
         </div>
         <hr />     
-        <h6 className="mb-3">© {new Date().getFullYear()}. All rights reserved, <a href="https://www.mirjy.com" style={{textDecoration: "none", color: "#008080"}}>Mirjy Technologies Ltd</a>.</h6>   
+        <h6 className="mb-3">© {new Date().getFullYear()}. All rights reserved, <a href="https://mirjy.com" style={{textDecoration: "none", color: "#008080"}}>Mirjy Technologies Ltd</a>.</h6>   
       </div>
     </footer>
   )

@@ -7,13 +7,13 @@ const StatusBadge = ({ status, statusType }) => {
     if (status === 'new') {
       badgeClass = 'bg-warning';
       label = 'Awaiting Pickup';
-    } else if (status === 'IN_WASH') {
+    } else if (status === 'washing') {
       badgeClass = 'bg-primary';
       label = 'Processing';
-    } else if (status === 'READY_FOR_RETURN') {
+    } else if (status === 'ready') {
       badgeClass = 'bg-success';
       label = 'Ready for Return';
-    } else if (status === 'COMPLETED') {
+    } else if (status === 'delivered') {
       badgeClass = 'bg-secondary';
       label = 'DELIVERED';
     } else {

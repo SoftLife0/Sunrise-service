@@ -57,6 +57,16 @@ class ApiService {
         }
     }
 
+    // PATCH request
+    async patch(endpoint, data = {}) {
+        try {
+            const response = await this.api.patch(endpoint, data);
+            return response.data;
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
+
     // Download request
     async download(endpoint) {
     try {

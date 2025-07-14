@@ -4,6 +4,9 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+a {
+  text-decoration: none;
+}
 
 .floating-shape {
   animation: squareMove 8s linear infinite;
