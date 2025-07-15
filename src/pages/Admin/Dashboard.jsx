@@ -3,17 +3,27 @@ import Header from '../../components/Header'
 import StatusBadge from '../../components/StatusBadge';
 import { Offcanvas } from 'react-bootstrap';
 import { apiService } from '../../services/apiService';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [pickupRequests, setPickupRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('');
+  const [filterStatus, setFilterStatus] = useState('new');
 
+  useEffect(() => {
+    const token = sessionStorage.getItem('user');
+    if (!token) {
+      toast.error('Please login to access the dashboard');
+      navigate('/admin/login');
+      return;
+    }
+  }, [navigate]);
 
   const handleClose = () => setShow(false);
   const handleShow = (request) => {
@@ -38,7 +48,7 @@ const Dashboard = () => {
       });
       
       // Refresh pickup requests
-      const response = await apiService.get('/requests/new/');
+      const response = await apiService.get(`/requests/${filterStatus ? `?status=${filterStatus}` : 'new'}/`);
       setPickupRequests(response);
       setShow(false)
       
@@ -53,20 +63,25 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchPickupRequests = async () => {
       try {
-        const response = await apiService.get('/requests/delivered/');
+        const response = await apiService.get(`/requests/${filterStatus ? `${filterStatus}` : 'new'}/`);
         console.log('Pickup Requests:', response);
+        console.log("Api Url", {url: `/requests/${filterStatus ? `${filterStatus}` : 'new'}/`})
         setPickupRequests(response);
       } catch (error) {
         console.error('Error fetching pickup requests:', error);
+        if (error.response?.status === 401) {
+          toast.error('Session expired. Please login again');
+          navigate('/login');
+        }
       }
     };  
     fetchPickupRequests();
-  }, []);
+  }, [navigate, filterStatus]);
 
   const cardData = [
     {
         title: "New Request", 
-        value: pickupRequests?.count || "0",
+        value: pickupRequests?.stats?.new_requests || "0",
         subtext: "New pickup requests",
         icon: <i className="bi bi-archive"></i>,
         gradient: "linear-gradient(45deg, #4ECDC4, #45B7AF)",
@@ -74,7 +89,7 @@ const Dashboard = () => {
     },
     {
         title: "All Requests",
-        value: "0",
+        value: pickupRequests?.stats?.total_requests || "0",
         subtext: "Total pickup requests", 
         icon: <i className="bi bi-clipboard-check"></i>,
         gradient: "linear-gradient(45deg, #FF6B6B, #FF8E8E)",
@@ -82,7 +97,7 @@ const Dashboard = () => {
     },
     {
         title: "All Customers",
-        value: "0",
+        value: pickupRequests?.stats?.total_customers || "0",
         subtext: "View customers list",
         icon: <i className="bi bi-person"></i>,
         gradient: "linear-gradient(45deg, #D3A745, #D3A745)",
@@ -155,58 +170,79 @@ const Dashboard = () => {
           <hr className='my-5' style={{opacity: 0.1}} />
 
           <div className="position-relative" style={{ zIndex: 1 }}>
-            <h4 className="card-title mb-4 d-flex align-items-center">
-              <i className="bi bi-clock-history me-2" style={{ color: '#4ECDC4' }}></i>
-              Recent Request
-            </h4>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <h4 className="card-title d-flex align-items-center">
+                <i className="bi bi-clock-history me-2" style={{ color: '#4ECDC4' }}></i>
+                 {filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1)} Requests ({pickupRequests?.filtered_count || "0"})                                                   
+              </h4>
+              <select 
+                className="form-select" 
+                style={{width: 'auto'}}
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+              >
+                <option value="new">Pending Pickup</option>
+                <option value="washing">In Wash</option>
+                <option value="ready">Ready for Return</option>
+                <option value="delivered">Completed</option>
+              </select>
+            </div>
           </div>
 
 
           <div className="row g-4 mb-5">
-            {Array.isArray(pickupRequests?.requests) && pickupRequests?.requests.map((request, index) => (
-              <div key={index} className="col-md-4">
-                <div className="card shadow-lg h-100 border-0" 
-                  style={{
-                    borderRadius: '20px',
-                    background: 'rgba(255,255,255,0.9)',
-                    backdropFilter: 'blur(10px)',
-                    transform: 'translateY(0)',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'}
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-                >
-                  <div className="card-body p-4">
-                    <div className="d-flex justify-content-between align-items-start mb-2">
-                      <small className="text-muted">
-                        <i className="bi bi-calendar3 me-1"></i>
-                        {request?.preferred_date} - {request.preferred_time}
-                      </small>
-                      <StatusBadge status={request.status} statusType="status" />
-                    </div>
-                    <h5 className="card-title mb-3 fw-bold">{request.customer_name}</h5>
-                    <div className="d-flex align-items-center mb-2 text-secondary">
-                      <i className="bi bi-geo-alt me-2"></i>
-                      <span>{request.pickup_address}</span>
-                    </div>
-                    <div className="d-flex align-items-center text-secondary">
-                      <i className="bi bi-telephone me-2"></i>
-                      <span>{request.phone}</span>
-                    </div>
-                    <hr className="my-3" style={{opacity: 0.1}} />
-                    <div className="d-flex justify-content-end">
-                      <button 
-                        className="btn btn-outline-secondary btn-sm" 
-                        onClick={() => handleShow(request)}
-                      >
-                        <i className="bi bi-arrow-right me-2"></i>
-                        View Details
-                      </button>
+            {Array.isArray(pickupRequests?.requests) && pickupRequests?.requests.length > 0 ? (
+              pickupRequests.requests.map((request, index) => (
+                <div key={index} className="col-md-4">
+                  <div className="card shadow-lg h-100 border-0" 
+                    style={{
+                      borderRadius: '20px',
+                      background: 'rgba(255,255,255,0.9)',
+                      backdropFilter: 'blur(10px)',
+                      transform: 'translateY(0)',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                  >
+                    <div className="card-body p-4">
+                      <div className="d-flex justify-content-between align-items-start mb-2">
+                        <small className="text-muted">
+                          <i className="bi bi-calendar3 me-1"></i>
+                          {request?.preferred_date} - {request.preferred_time}
+                        </small>
+                        <StatusBadge status={request.status} statusType="status" />
+                      </div>
+                      <h5 className="card-title mb-3 fw-bold">{request.customer_name}</h5>
+                      <div className="d-flex align-items-center mb-2 text-secondary">
+                        <i className="bi bi-geo-alt me-2"></i>
+                        <span>{request.pickup_address}</span>
+                      </div>
+                      <div className="d-flex align-items-center text-secondary">
+                        <i className="bi bi-telephone me-2"></i>
+                        <span>{request.phone}</span>
+                      </div>
+                      <hr className="my-3" style={{opacity: 0.1}} />
+                      <div className="d-flex justify-content-end">
+                        <button 
+                          className="btn btn-outline-secondary btn-sm" 
+                          onClick={() => handleShow(request)}
+                        >
+                          <i className="bi bi-arrow-right me-2"></i>
+                          View Details
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
+              ))
+            ) : (
+              <div className="col-12 text-center">
+                <div className="p-5">
+                  <h5>No requests found for this status</h5>
+                </div>
               </div>
-            ))}
+            )}            
           </div>
         </div>
       </section>

@@ -20,8 +20,8 @@ const Login = () => {
     setLoading(true)
     try {
         const response = await apiService.post('/login/', formData)
-        console.log('Login response:', response)
-        sessionStorage.setItem('user', JSON.stringify(response))
+        console.log('Login response:', response?.user)
+        sessionStorage.setItem('user', JSON.stringify(response?.user))
         toast.success("Login successful!", { position: 'top-right', hideProgressBar: true });
         navigate('/admin/dashboard')
         setFormData({phone: '', password: ''})
