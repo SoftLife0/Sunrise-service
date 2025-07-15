@@ -53,7 +53,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchPickupRequests = async () => {
       try {
-        const response = await apiService.get('/requests/ready/');
+        const response = await apiService.get('/requests/delivered/');
         console.log('Pickup Requests:', response);
         setPickupRequests(response);
       } catch (error) {
