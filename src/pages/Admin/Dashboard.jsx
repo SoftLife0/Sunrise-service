@@ -48,7 +48,7 @@ const Dashboard = () => {
       });
       
       // Refresh pickup requests
-      const response = await apiService.get(`/requests/${filterStatus ? `?status=${filterStatus}` : 'new'}/`);
+      const response = await apiService.get(`/requests/${filterStatus ? `${filterStatus}` : 'new'}/`);
       setPickupRequests(response);
       setShow(false)
       
@@ -102,7 +102,16 @@ const Dashboard = () => {
         icon: <i className="bi bi-person"></i>,
         gradient: "linear-gradient(45deg, #D3A745, #D3A745)",
         link: "/admin/customer",
+    },
+    {
+        title: "SMS Balance",
+        value: pickupRequests?.stats?.sms_credits || "0",
+        subtext: "View customers list",
+        icon: <i className="bi bi-envelope-paper"></i>,
+        gradient: "linear-gradient(45deg, #6B5B95, #9B8FBC)",
+        link: "#",
     }
+    
   ];
 
   return (
@@ -141,7 +150,7 @@ const Dashboard = () => {
 
           <div className="row g-4 mb-4">
             {cardData.map((card, index) => (
-              <div key={index} className="col-md-4">
+              <div key={index} className="col-md-3">
                 <Link to={card.link}>
                   <div className="card shadow-lg h-100 border-0" 
                     style={{
@@ -294,38 +303,67 @@ const Dashboard = () => {
                 </div>
 
                 <div className="card border-0 shadow-sm mb-4">
-                        <div className="card-body">
-                            <h5 className="card-title mb-3">Customer Details</h5>
-                            <div className="mb-3">
-                                <small className="text-muted d-block mb-1">Name</small>
-                                <div className="d-flex align-items-center">
-                                    <i className="bi bi-person me-2"></i>
-                                    {selectedRequest.customer_name}
-                                </div>
-                            </div>
-                            <div className="mb-3">
-                                <small className="text-muted d-block mb-1">Phone</small>
-                                <div className="d-flex align-items-center">
-                                    <i className="bi bi-telephone me-2"></i>
-                                    {selectedRequest.phone}
-                                </div>
-                            </div>
-                            <div className="mb-3">
-                                <small className="text-muted d-block mb-1">Pickup Date</small>
-                                <div className="d-flex align-items-center">
-                                    <i className="bi bi-calendar3 me-2"></i>
-                                    {selectedRequest.preferred_date}
-                                </div>
-                            </div>
-                            <div className="mb-3">
-                                <small className="text-muted d-block mb-1">Address</small>
-                                <div className="d-flex align-items-center">
-                                    <i className="bi bi-geo-alt me-2"></i>
-                                    {selectedRequest.pickup_address}
-                                </div>
+                    <div className="card-body">
+                      <h5 className="card-title mb-3">Customer Details</h5>
+                      <div className="mb-3">
+                          <small className="text-muted d-block mb-1">Name</small>
+                          <div className="d-flex align-items-center">
+                              <i className="bi bi-person me-2"></i>
+                              {selectedRequest.customer_name}
+                          </div>
+                      </div>
+                      <div className="mb-3">
+                          <small className="text-muted d-block mb-1">Phone</small>
+                          <div className="d-flex align-items-center">
+                              <i className="bi bi-telephone me-2"></i>
+                              {selectedRequest.phone}
+                          </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-6 mb-3">
+                            <small className="text-muted d-block mb-1">Preferred Time</small>
+                            <div className="d-flex align-items-center">
+                                <i className="bi bi-clock me-2"></i>
+                                {selectedRequest.preferred_time}
                             </div>
                         </div>
+                        <div className="col-md-6 mb-3">
+                            <small className="text-muted d-block mb-1">Preferred Date</small>
+                            <div className="d-flex align-items-center">
+                                <i className="bi bi-calendar3 me-2"></i>
+                                {selectedRequest.preferred_date}
+                            </div>
+                        </div>
+                      </div>
+                      <div className="mb-3">
+                          <small className="text-muted d-block mb-1">Services</small>
+                          <div className="d-flex align-items-center">
+                              <i className="bi bi-basket me-2"></i>
+                              {selectedRequest?.service?.map((service, index) => (
+                                <span key={service.id}>
+                                   {service.name} 
+                                   {index < selectedRequest.service.length - 1 ? ', ' : ''}  
+                                </span>
+                              )) || "N/A"}
+                          </div>
+                      </div>
+                      
+                      <div className="mb-3">
+                          <small className="text-muted d-block mb-1">Duration</small>
+                          <div className="d-flex align-items-center">
+                              <i className="bi bi-calendar3 me-2"></i>
+                              {selectedRequest.duration}
+                          </div>
+                      </div>
+                      <div className="mb-3">
+                          <small className="text-muted d-block mb-1">Address</small>
+                          <div className="d-flex align-items-center">
+                              <i className="bi bi-geo-alt me-2"></i>
+                              {selectedRequest.pickup_address}
+                          </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
             )}
             </Offcanvas.Body>          

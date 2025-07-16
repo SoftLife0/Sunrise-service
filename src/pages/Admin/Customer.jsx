@@ -126,8 +126,8 @@ const Customer = () => {
       
       document.querySelector('[data-bs-dismiss="modal"]').click()
     } catch (err) {
-      console.error('Error saving customer:', err)
-      setError('Error saving customer. Please try again.')
+      const errorMessage = err?.response?.data?.detail
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }
@@ -147,12 +147,11 @@ const Customer = () => {
           <div className="position-relative" style={{ zIndex: 1 }}>
             <div className="d-flex justify-between align-items-center gap-4">
                 <div>
-                    <h4 className="card-title mb-3 d-flex align-items-center" style={{ fontSize: '2rem', fontWeight: '600' }}>
-                    <i className="bi bi-grid-1x2-fill me-3" style={{ color: '#4ECDC4' }}></i>
-                    Customers List
-                    </h4>
-                    <p className="input-label mb-4" style={{ color: "#6c757d", fontSize: '1.1rem' }}>Manage and view all your customers in one place</p>
-                </div>               
+                  <h4 className="card-title mb-2 d-flex align-items-center"><i className="bi bi-phone me-2" style={{ color: '#4ECDC4' }}></i>Customer List</h4>
+                  <p className="input-label mb-4" style={{ color: "#6c757d", fontSize: '1.1rem' }}>Manage and view all your customers in one place</p>
+                </div>   
+
+                <button onClick={() => navigate(-1)} className="btn btn-outline-secondary mb-4 px-4 py-2" style={{boxShadow: '0 2px 4px rgba(0,0,0,0.1)', transition: 'all 0.3s ease'}}>Back</button>                
             </div>     
 
             {/* Add Customer Button */}
