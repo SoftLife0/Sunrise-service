@@ -106,7 +106,7 @@ const Dashboard = () => {
     {
         title: "SMS Balance",
         value: pickupRequests?.stats?.sms_credits || "0",
-        subtext: "View customers list",
+        subtext: "Total sms credit left",
         icon: <i className="bi bi-envelope-paper"></i>,
         gradient: "linear-gradient(45deg, #6B5B95, #9B8FBC)",
         link: "#",
