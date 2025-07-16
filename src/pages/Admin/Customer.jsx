@@ -1,28 +1,142 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '../../components/Header'
+import { apiService } from '../../services/apiService';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 
 const Customer = () => {
+  const navigate = useNavigate();
+  const [customers, setCustomers] = useState([])
+  const [formData, setFormData] = useState({name: '', phone: '', file: null})
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false);
+  const [selectedCustomers, setSelectedCustomers] = useState([]);
+  const [message, setMessage] = useState('');
+  const [selectAll, setSelectAll] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('user');
+    if (!token) {
+      toast.error('Please login to access the dashboard');
+      navigate('/admin/login');
+      return;
+    }
+    fetchCustomers()
+  }, [navigate]);
+
+  useEffect(() => {
+  const handleOutsideClick = (e) => {
+    if (!e.target.closest('.position-relative')) {
+      setDropdownOpen(false);
+    }
+  };
+  document.addEventListener('click', handleOutsideClick);
+  return () => document.removeEventListener('click', handleOutsideClick);
+}, []);
+
+
+  useEffect(() => {
+    if(selectAll) {
+      setSelectedCustomers(customers.map(customer => customer.phone));
+    } else {
+      setSelectedCustomers([]);
+    }
+  }, [selectAll, customers]);
+
+  const fetchCustomers = async () => {
+    try {
+      const response = await apiService.get('/customers')
+      setCustomers(response?.requests)
+    } catch (err) {
+      console.error('Error fetching customers:', err)
+    }
+  }
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id === 'customerName' ? 'name' : e.target.id === 'customerPhone' ? 'phone' : e.target.name]: e.target.value
+    })
+  }
+
+  const handleFileChange = (e) => {
+    setFormData({...formData,
+      file: e.target.files[0],
+      name: '',
+      phone: ''
+    })
+  }
+
+  const handleCustomerSelect = (phone) => {
+    setSelectedCustomers(prev => {
+      if(prev.includes(phone)) {
+        return prev.filter(p => p !== phone);
+      } else {
+        return [...prev, phone];
+      }
+    });
+  }
+
+  const handleMessageSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await apiService.post('/send-message/', {
+        recipients: selectedCustomers,
+        message: message
+      });
+      toast.success('Message sent successfully!');
+      setMessage('');
+      setSelectedCustomers([]);
+      setSelectAll(false);
+      document.querySelector('[data-bs-dismiss="modal"]').click()
+    } catch (err) {
+      console.error('Error sending message:', err);
+      toast.error('Error sending message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    if (!formData.file && (!formData.name || !formData.phone)) {
+      setError('Please either fill in both name and phone, or upload a file')
+      return
+    }
+
+    try {
+      if (formData.file) {
+        const formPayload = new FormData()
+        formPayload.append('file', formData.file)
+        await apiService.post('/add-or-upload-customer/', formPayload)
+      } else {
+        await apiService.post('/add-or-upload-customer/', {name: formData.name, phone: formData.phone})
+      }
+      
+      toast.success('File uploaded successfully!')
+      setFormData({ name: '', phone: '', file: null })
+      fetchCustomers()
+      
+      document.querySelector('[data-bs-dismiss="modal"]').click()
+    } catch (err) {
+      console.error('Error saving customer:', err)
+      setError('Error saving customer. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <div style={{
-      backgroundColor: '#f8f9fa',
-      minHeight: '100vh',
-      color: '#2c3e50',
-      position: 'relative',
-      backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.9) 100%)'
-    }}>
+    <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh', color: '#2c3e50', position: 'relative', backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.9) 100%)'}}>
       {/* Floating Shape Top Left */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '400px',
-        height: '400px',
-        background: 'linear-gradient(45deg, rgba(74,222,222,0.15), rgba(74,222,222,0.25))',
-        clipPath: 'polygon(0 0, 100% 0, 0 100%)',
-        zIndex: 0,
-        filter: 'blur(2px)'
-      }} />
+      <div style={{position: 'absolute',top: 0,left: 0,width: '400px',height: '400px',background: 'linear-gradient(45deg, rgba(74,222,222,0.15), rgba(74,222,222,0.25))',clipPath: 'polygon(0 0, 100% 0, 0 100%)',zIndex: 0,filter: 'blur(2px)'}} />
 
       {/* Header */}
       <Header />
@@ -42,7 +156,7 @@ const Customer = () => {
             </div>     
 
             {/* Add Customer Button */}
-            <button type="button" className="btn btn-primary mb-4 px-4 py-2" 
+            <button type="button" className="btn btn-primary mb-4 px-4 py-2 me-2" 
               style={{ 
                 backgroundColor: '#4ECDC4', 
                 border: 'none', 
@@ -52,6 +166,18 @@ const Customer = () => {
               data-bs-toggle="modal" 
               data-bs-target="#addCustomerModal">
               <i className="bi bi-plus-circle me-2"></i>Add New Customer
+            </button>
+
+            <button type="button" className="btn btn-primary mb-4 px-4 py-2" 
+              style={{ 
+                backgroundColor: '#4ECDC4', 
+                border: 'none', 
+                boxShadow: '0 2px 4px rgba(78,205,196,0.3)',
+                transition: 'all 0.3s ease'
+              }}
+              data-bs-toggle="modal" 
+              data-bs-target="#broadcastModal">
+              <i className="bi bi-broadcast me-2"></i>Broadcast Message
             </button>
           </div>
 
@@ -64,14 +190,12 @@ const Customer = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td className="py-3">John Doe</td>
-                  <td className="py-3">+1 234 567 8900</td>
-                </tr>
-                <tr>
-                  <td className="py-3">Jane Smith</td>
-                  <td className="py-3">+1 234 567 8901</td>
-                </tr>
+                {customers.map((customer, index) => (
+                  <tr key={index}>
+                    <td className="py-3">{customer.name}</td>
+                    <td className="py-3">{customer.phone}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -85,14 +209,31 @@ const Customer = () => {
                   <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div className="modal-body px-4">
-                  <form>
+                  <form onSubmit={handleSubmit}>
+                    {error && <div className="alert alert-danger">{error}</div>}
                     <div className="mb-4">
                       <label htmlFor="customerName" className="form-label text-muted">Customer Name</label>
-                      <input type="text" className="form-control" id="customerName" placeholder="Enter customer name"/>
+                      <input 
+                        type="text" 
+                        className="form-control" 
+                        id="customerName" 
+                        placeholder="Enter customer name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        disabled={formData.file !== null}
+                      />
                     </div>
                     <div className="mb-4">
                       <label htmlFor="customerPhone" className="form-label text-muted">Phone Number</label>
-                      <input type="tel" className="form-control" id="customerPhone" placeholder="Enter phone number"/>
+                      <input 
+                        type="tel" 
+                        className="form-control" 
+                        id="customerPhone" 
+                        placeholder="Enter phone number"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        disabled={formData.file !== null}
+                      />
                     </div>
 
                     <div className="flex items-center my-2">
@@ -103,19 +244,141 @@ const Customer = () => {
 
                     <div className="mb-4">
                       <label htmlFor="customerPhoto" className="form-label text-muted">Bulk Upload</label>
-                      <input type="file" className="form-control" id="customerPhoto" accept="image/*"/>
+                      <input 
+                        type="file" 
+                        className="form-control" 
+                        id="customerPhoto" 
+                        accept=".csv,.xlsx,.xls"
+                        onChange={handleFileChange}
+                        disabled={formData.name !== '' || formData.phone !== ''}
+                      />
+                    </div>
+                  
+                    <div className="modal-footer border-top-0">
+                      <button type="button" className="btn btn-light px-4" data-bs-dismiss="modal">Cancel</button>
+                      <button onClick={handleSubmit} disabled={loading} className="btn btn-primary px-4" style={{ backgroundColor: '#4ECDC4', border: 'none' }}>
+                        {loading ? (
+                          <>
+                            <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                          </>
+                        ) : (
+                          "Save Customer"
+                        )}
+                      </button>
                     </div>
                   </form>
-                </div>
-
-                <div className="modal-footer border-top-0">
-                  <button type="button" className="btn btn-light px-4" data-bs-dismiss="modal">Cancel</button>
-                  <button type="button" className="btn btn-primary px-4" style={{ backgroundColor: '#4ECDC4', border: 'none' }}>Save Customer</button>
                 </div>
               </div>
             </div>
           </div>
 
+          {/* Broadcast Modal */}
+          <div className="modal fade" id="broadcastModal" tabIndex="-1" aria-labelledby="broadcastModalLabel" aria-hidden="true">
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content border-0 shadow">
+                <div className="modal-header border-bottom-0">
+                  <h5 className="modal-title" id="broadcastModalLabel" style={{ color: '#2c3e50', fontWeight: '600' }}>Send Broadcast Message</h5>
+                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div className="modal-body px-4">
+                  <form onSubmit={handleMessageSubmit}>
+
+                    <div className="mb-4">
+                      <label className="form-label fw-bold">Select Customers</label>
+                      <div className="position-relative">
+                        <div 
+                          className="form-select rounded-3"
+                          onClick={() => setDropdownOpen(prev => !prev)}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          {selectedCustomers.length
+                            ? `${selectedCustomers.length} customers selected`
+                            : 'Click to select customers'}
+                        </div>
+
+                        {dropdownOpen && (
+                          <div
+                            className="dropdown position-absolute w-100 bg-white border rounded-3 mt-1"
+                            style={{ maxHeight: '200px', overflowY: 'auto', zIndex: 1000 }}
+                          >
+                            <div className="px-3 py-2 border-bottom">
+                              <input
+                                type="checkbox"
+                                className="me-2"
+                                checked={selectedCustomers.length === customers.length}
+                                onChange={() => {
+                                  if (selectedCustomers.length === customers.length) {
+                                    setSelectedCustomers([]);
+                                  } else {
+                                    setSelectedCustomers(customers.map(c => c.phone));
+                                  }
+                                }}
+                              />
+                              <label className="form-check-label">Select All</label>
+                            </div>
+
+                            {customers.length ? (
+                              customers.map((customer, index) => (
+                                <label
+                                  key={index}
+                                  className="d-block px-3 py-2 m-0"
+                                  style={{ cursor: 'pointer' }}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    className="me-2"
+                                    checked={selectedCustomers.includes(customer.phone)}
+                                    onChange={() => {
+                                      setSelectedCustomers(prev =>
+                                        prev.includes(customer.phone)
+                                          ? prev.filter(p => p !== customer.phone)
+                                          : [...prev, customer.phone]
+                                      );
+                                    }}
+                                  />
+                                  {customer.name} ({customer.phone})
+                                </label>
+                              ))
+                            ) : (
+                              <p className="m-0 p-3">No customers available</p>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+
+                    <div className="mb-4">
+                      <label htmlFor="message" className="form-label text-muted">Message</label>
+                      <textarea 
+                        className="form-control" 
+                        id="message"
+                        rows="4"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        placeholder="Enter your message"
+                      />
+                    </div>
+                    <div className="modal-footer border-top-0">
+                      <button type="button" className="btn btn-light px-4" data-bs-dismiss="modal">Cancel</button>
+                      <button 
+                        type="submit" 
+                        disabled={loading || selectedCustomers.length === 0 || !message} 
+                        className="btn btn-primary px-4" 
+                        style={{ backgroundColor: '#4ECDC4', border: 'none' }}
+                      >
+                        {loading ? (
+                          <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                        ) : (
+                          "Send Message"
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
