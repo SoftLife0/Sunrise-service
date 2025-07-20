@@ -15,6 +15,8 @@ const Customer = () => {
   const [message, setMessage] = useState('');
   const [selectAll, setSelectAll] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [editCustomer, setEditCustomer] = useState(null);
 
 
   useEffect(() => {
@@ -28,14 +30,14 @@ const Customer = () => {
   }, [navigate]);
 
   useEffect(() => {
-  const handleOutsideClick = (e) => {
-    if (!e.target.closest('.position-relative')) {
-      setDropdownOpen(false);
-    }
-  };
-  document.addEventListener('click', handleOutsideClick);
-  return () => document.removeEventListener('click', handleOutsideClick);
-}, []);
+    const handleOutsideClick = (e) => {
+      if (!e.target.closest('.position-relative')) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('click', handleOutsideClick);
+    return () => document.removeEventListener('click', handleOutsideClick);
+  }, []);
 
 
   useEffect(() => {
@@ -46,9 +48,46 @@ const Customer = () => {
     }
   }, [selectAll, customers]);
 
+  const handleDelete = async (customerId) => {
+    if (window.confirm('Are you sure you want to delete this customer?')) {
+      try {
+        await apiService.delete(`/customers/${customerId}/delete`);
+        toast.success('Customer deleted successfully');
+        fetchCustomers();
+      } catch (err) {
+        console.error('Error deleting customer:', err);
+        toast.error('Error deleting customer');
+      }
+    }
+  }
+
+  const handleEdit = (customer) => {
+    setEditMode(true);
+    setEditCustomer(customer);
+    setFormData({ name: customer.name, phone: customer.phone });
+    // document.querySelector('[data-bs-dismiss="modal"]').click()
+    const modal = new window.bootstrap.Modal(document.getElementById('addCustomerModal'));
+    modal.show();
+  }
+
+  const resetForm = () => {
+    setFormData({ name: '', phone: '', file: null });
+    setEditMode(false);
+    setEditCustomer(null);
+    setError('');
+  };
+
+  useEffect(() => {
+    const modal = document.getElementById('addCustomerModal');
+    modal?.addEventListener('hidden.bs.modal', resetForm);
+    return () => modal?.removeEventListener('hidden.bs.modal', resetForm);
+  }, []);
+
+
   const fetchCustomers = async () => {
     try {
       const response = await apiService.get('/customers')
+      console.log('Customers:', response)
       setCustomers(response?.requests)
     } catch (err) {
       console.error('Error fetching customers:', err)
@@ -81,6 +120,8 @@ const Customer = () => {
   }
 
   const handleMessageSubmit = async (e) => {
+    if (!window.confirm(`Send this message to ${selectedCustomers.length} customers?`)) return;
+
     e.preventDefault();
     setLoading(true);
     try {
@@ -111,19 +152,34 @@ const Customer = () => {
       return
     }
 
+    // if (!/^\d{10,15}$/.test(formData.phone)) {
+    //   setError('Enter a valid phone number');
+    //   return;
+    // }
+
+
     try {
-      if (formData.file) {
-        const formPayload = new FormData()
-        formPayload.append('file', formData.file)
-        await apiService.post('/add-or-upload-customer/', formPayload)
+      if (editMode && editCustomer) {
+        await apiService.post(`/customers/${editCustomer.id}/update/`, {
+          name: formData.name,
+          phone: formData.phone
+        });
+        toast.success('Customer updated successfully!');
       } else {
-        await apiService.post('/add-or-upload-customer/', {name: formData.name, phone: formData.phone})
+        if (formData.file) {
+          const formPayload = new FormData()
+          formPayload.append('file', formData.file)
+          await apiService.post('/add-or-upload-customer/', formPayload)
+        } else {
+          await apiService.post('/add-or-upload-customer/', {name: formData.name, phone: formData.phone})
+        }
+        toast.success('File uploaded successfully!')
       }
-      
-      toast.success('File uploaded successfully!')
+
       setFormData({ name: '', phone: '', file: null })
       fetchCustomers()
-      
+      setEditMode(false)
+      setEditCustomer(null)
       document.querySelector('[data-bs-dismiss="modal"]').click()
     } catch (err) {
       const errorMessage = err?.response?.data?.detail
@@ -169,7 +225,7 @@ const Customer = () => {
 
             <button type="button" className="btn btn-primary mb-4 px-4 py-2" 
               style={{ 
-                backgroundColor: '#4ECDC4', 
+                backgroundColor: '#FF6B6B', 
                 border: 'none', 
                 boxShadow: '0 2px 4px rgba(78,205,196,0.3)',
                 transition: 'all 0.3s ease'
@@ -186,6 +242,7 @@ const Customer = () => {
                 <tr>
                   <th className="py-3">Name</th>
                   <th className="py-3">Phone</th>
+                  <th className="py-3">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -193,6 +250,14 @@ const Customer = () => {
                   <tr key={index}>
                     <td className="py-3">{customer.name}</td>
                     <td className="py-3">{customer.phone}</td>
+                    <td className="py-3">
+                      <button onClick={() => handleEdit(customer)} className="btn btn-sm me-2" style={{ backgroundColor: '#4ECDC4', border: 'none' }}>
+                        <i className="bi bi-pencil"></i>
+                      </button>
+                      <button onClick={() => handleDelete(customer.id)} className="btn btn-danger btn-sm me-2" style={{ backgroundColor: '#FF6B6B', border: 'none' }}>
+                        <i className="bi bi-trash"></i>
+                      </button>
+                    </td>                    
                   </tr>
                 ))}
               </tbody>
@@ -219,7 +284,7 @@ const Customer = () => {
                         placeholder="Enter customer name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        disabled={formData.file !== null}
+                        disabled={editMode ? false : formData.file !== null}
                       />
                     </div>
                     <div className="mb-4">
@@ -231,7 +296,7 @@ const Customer = () => {
                         placeholder="Enter phone number"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        disabled={formData.file !== null}
+                        disabled={editMode ? false : formData.file !== null}
                       />
                     </div>
 
@@ -261,8 +326,9 @@ const Customer = () => {
                             <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                           </>
                         ) : (
-                          "Save Customer"
+                          editMode ? "Update Customer" : "Save Customer"
                         )}
+                        
                       </button>
                     </div>
                   </form>
@@ -319,7 +385,7 @@ const Customer = () => {
                             {customers.length ? (
                               customers.map((customer, index) => (
                                 <label
-                                  key={index}
+                                  key={customer.id}
                                   className="d-block px-3 py-2 m-0"
                                   style={{ cursor: 'pointer' }}
                                 >
@@ -371,6 +437,7 @@ const Customer = () => {
                         ) : (
                           "Send Message"
                         )}
+
                       </button>
                     </div>
                   </form>
@@ -383,6 +450,6 @@ const Customer = () => {
 
     </div>
   )
-}
+};
 
 export default Customer
