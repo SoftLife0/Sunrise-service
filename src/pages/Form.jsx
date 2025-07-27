@@ -22,6 +22,7 @@ const Form = () => {
     }))
   }
 
+
   useEffect(() => {
     const fetchServices = async () => {
       try {
@@ -110,6 +111,7 @@ const Form = () => {
                                   value={formData.preferred_date}
                                   onChange={handleChange}
                                   required 
+                                  min={new Date().toISOString().split("T")[0]}
                                 />
                             </div>
 
@@ -127,41 +129,41 @@ const Form = () => {
 
                             <div className="row mt-3">
                               <div className="col-7">
-                                    <label htmlFor="service" className="form-label fw-bold">Service Type</label>
-                                    <div className="position-relative">
-                                        <div 
-                                            className="form-select rounded-3"
-                                            onClick={() => setDropdownOpen(!dropdownOpen)}
-                                            style={{cursor: 'pointer'}}
-                                        >
-                                            {formData.service.length ? `${formData.service.length} services selected` : 'Select services'}
-                                        </div>
-                                        
-                                        {dropdownOpen && (
-                                            <div className="dropdown position-absolute w-100 bg-white border rounded-3 mt-1" style={{zIndex: 1000}}>
-                                                {Array.isArray(serviceOptions) && serviceOptions.length > 0 ? (
-                                                    serviceOptions.map((service) => (
-                                                        <label key={service.id} className="d-block px-3 py-2 m-0" style={{cursor: 'pointer'}}>
-                                                            <input 
-                                                                type="checkbox"
-                                                                className="me-2"
-                                                                checked={formData.service.includes(service.id)}
-                                                                onChange={() => {
-                                                                    const updatedServices = formData.service.includes(service.id)
-                                                                        ? formData.service.filter(id => id !== service.id)
-                                                                        : [...formData.service, service.id];
-                                                                    setFormData(prev => ({...prev, service: updatedServices}));
-                                                                }}
-                                                            />
-                                                            {service.name}
-                                                        </label>
-                                                    ))
-                                                ) : (
-                                                    <p className="m-0 p-3">No services available</p>
-                                                )}
-                                            </div>
-                                        )}
-                                    </div>
+                                  <label htmlFor="service" className="form-label fw-bold">Service Type</label>
+                                  <div className="position-relative">
+                                      <div 
+                                          className="form-select rounded-3"
+                                          onClick={() => setDropdownOpen(!dropdownOpen)}
+                                          style={{cursor: 'pointer'}}
+                                      >
+                                          {formData.service.length ? `${formData.service.length} services selected` : 'Select services'}
+                                      </div>
+                                      
+                                      {dropdownOpen && (
+                                          <div className="dropdown position-absolute w-100 bg-white border rounded-3 mt-1" style={{zIndex: 1000}}>
+                                              {Array.isArray(serviceOptions) && serviceOptions.length > 0 ? (
+                                                  serviceOptions.map((service) => (
+                                                      <label key={service.id} className="d-block px-3 py-2 m-0" style={{cursor: 'pointer'}}>
+                                                          <input 
+                                                              type="checkbox"
+                                                              className="me-2"
+                                                              checked={formData.service.includes(service.id)}
+                                                              onChange={() => {
+                                                                  const updatedServices = formData.service.includes(service.id)
+                                                                      ? formData.service.filter(id => id !== service.id)
+                                                                      : [...formData.service, service.id];
+                                                                  setFormData(prev => ({...prev, service: updatedServices}));
+                                                              }}
+                                                          />
+                                                          {service.name}
+                                                      </label>
+                                                  ))
+                                              ) : (
+                                                  <p className="m-0 p-3">No services available</p>
+                                              )}
+                                          </div>
+                                      )}
+                                  </div>
                                 </div>
 
                                 <div className="col-5">
