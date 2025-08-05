@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Customer = () => {
   const navigate = useNavigate();
-  const [customers, setCustomers] = useState([])
+  const [customers, setCustomers] = useState([]);
   const [formData, setFormData] = useState({name: '', phone: '', file: null})
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false);
@@ -17,6 +17,7 @@ const Customer = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editCustomer, setEditCustomer] = useState(null);
+  const [reports, setReports] = useState([]);
 
 
   useEffect(() => {
@@ -27,6 +28,7 @@ const Customer = () => {
       return;
     }
     fetchCustomers()
+    fetchReport()
   }, [navigate]);
 
   useEffect(() => {
@@ -94,6 +96,16 @@ const Customer = () => {
     }
   }
 
+  const fetchReport = async () => {
+    try {
+      const response = await apiService.get('/sms-history')
+      console.log('Report:', response)
+      setReports(response || [])     
+    } catch (err) {
+      console.error('Error fetching report:', err)
+    }
+  }
+
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -125,10 +137,8 @@ const Customer = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await apiService.post('/send-message/', {
-        recipients: selectedCustomers,
-        message: message
-      });
+      const response = await apiService.post('/send-message/', {recipients: selectedCustomers,message: message});
+      console.log('Message sent:', response);
       toast.success('Message sent successfully!');
       setMessage('');
       setSelectedCustomers([]);
@@ -178,6 +188,7 @@ const Customer = () => {
 
       setFormData({ name: '', phone: '', file: null })
       fetchCustomers()
+      fetchReport()
       setEditMode(false)
       setEditCustomer(null)
       document.querySelector('[data-bs-dismiss="modal"]').click()
@@ -236,32 +247,59 @@ const Customer = () => {
             </button>
           </div>
 
-          <div className="col-md-8 table-responsive mt-4">
-            <table className="table table-hover shadow-sm bg-white rounded">
-              <thead style={{ backgroundColor: '#f8f9fa' }}>
-                <tr>
-                  <th className="py-3">Name</th>
-                  <th className="py-3">Phone</th>
-                  <th className="py-3">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {customers.map((customer, index) => (
-                  <tr key={index}>
-                    <td className="py-3">{customer.name}</td>
-                    <td className="py-3">{customer.phone}</td>
-                    <td className="py-3">
-                      <button onClick={() => handleEdit(customer)} className="btn btn-sm me-2" style={{ backgroundColor: '#4ECDC4', border: 'none' }}>
-                        <i className="bi bi-pencil"></i>
-                      </button>
-                      <button onClick={() => handleDelete(customer.id)} className="btn btn-danger btn-sm me-2" style={{ backgroundColor: '#FF6B6B', border: 'none' }}>
-                        <i className="bi bi-trash"></i>
-                      </button>
-                    </td>                    
+
+          <div className="row">
+            <div className="col-md-7 table-responsive my-4" style={{ maxHeight: '600px', overflowY: 'auto' }}>
+              <table className="table table-hover shadow-sm bg-white rounded">
+                <thead style={{ backgroundColor: '#f8f9fa', position: 'sticky', top: 0, zIndex: 1 }}>
+                  <tr>
+                    <th className="py-3">Name</th>
+                    <th className="py-3">Phone</th>
+                    <th className="py-3">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {customers.map((customer, index) => (
+                    <tr key={index}>
+                      <td className="py-3">{customer.name}</td>
+                      <td className="py-3">{customer.phone}</td>
+                      <td className="py-3">
+                        <button onClick={() => handleEdit(customer)} className="btn btn-sm me-2" style={{ backgroundColor: '#4ECDC4', border: 'none' }}>
+                          <i className="bi bi-pencil"></i>
+                        </button>
+                        <button onClick={() => handleDelete(customer.id)} className="btn btn-danger btn-sm me-2" style={{ backgroundColor: '#FF6B6B', border: 'none' }}>
+                          <i className="bi bi-trash"></i>
+                        </button>
+                      </td>                    
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="col-md-5 table-responsive mt-4" style={{ maxHeight: '600px', overflowY: 'auto' }}>
+              <h6>Message Report</h6>
+              <table className="table table-hover shadow-sm bg-white rounded">
+                <thead style={{ backgroundColor: '#f8f9fa', position: 'sticky', top: 0, zIndex: 1 }}>
+                  <tr>
+                    <th className="py-3">Phone</th>
+                    <th className="py-3">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reports.map((report) => (
+                    <tr key={report?.id}>
+                      <td className="py-3">{report.phone}</td>
+                      <td className="py-3">
+                        <span className={`badge ${report.status === 'DELIVERED' ? 'bg-success' : report.status === 'NOT_DELIVERED' ? 'bg-danger' : 'bg-secondary'}`}>
+                          {report.status}
+                        </span>
+                      </td>                      
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           {/* Add Customer Modal */}
